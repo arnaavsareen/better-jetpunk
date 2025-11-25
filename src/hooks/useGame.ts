@@ -1,0 +1,84 @@
+import { useState, useEffect, useCallback } from 'react';
+import countriesData from '../data/countries.json';
+import type { Country, GameStatus } from '../types';
+
+const TOTAL_TIME = 15 * 60; // 15 minutes in seconds
+const TOTAL_COUNTRIES = countriesData.length;
+
+export const useGame = () => {
+    const [status, setStatus] = useState<GameStatus>('idle');
+    const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
+    const [guessedCountries, setGuessedCountries] = useState<Set<string>>(new Set());
+    const [inputValue, setInputValue] = useState('');
+    const [showAllCountries, setShowAllCountries] = useState(false);
+
+    // Timer logic
+    useEffect(() => {
+        let interval: ReturnType<typeof setInterval>;
+        if (status === 'playing' && timeLeft > 0) {
+            interval = setInterval(() => {
+                setTimeLeft((prev) => {
+                    if (prev <= 1) {
+                        setStatus('lost');
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [status, timeLeft]);
+
+    const startGame = useCallback(() => {
+        setStatus('playing');
+        setTimeLeft(TOTAL_TIME);
+        setGuessedCountries(new Set());
+        setInputValue('');
+        setShowAllCountries(false);
+    }, []);
+
+    const handleInput = useCallback((value: string) => {
+        setInputValue(value);
+
+        if (status !== 'playing') return;
+
+        const normalizedInput = value.trim().toLowerCase();
+
+        // Find if the input matches any country
+        const match = countriesData.find((country) =>
+            !guessedCountries.has(country.code) &&
+            country.acceptedNames.some(name => name === normalizedInput)
+        );
+
+        if (match) {
+            setGuessedCountries((prev) => {
+                const newSet = new Set(prev).add(match.code);
+                if (newSet.size === TOTAL_COUNTRIES) {
+                    setStatus('won');
+                }
+                return newSet;
+            });
+            setInputValue(''); // Clear input on correct guess
+            // Optional: Add sound or visual feedback trigger here
+        }
+    }, [status, guessedCountries]);
+
+    const giveUp = useCallback(() => {
+        setStatus('lost');
+        setShowAllCountries(true);
+    }, []);
+
+    return {
+        status,
+        timeLeft,
+        score: guessedCountries.size,
+        totalCountries: TOTAL_COUNTRIES,
+        guessedCountries,
+        inputValue,
+        handleInput,
+        startGame,
+        giveUp,
+        allCountries: countriesData as Country[],
+        showAllCountries
+    };
+};
