@@ -9,9 +9,16 @@ export const Confetti: React.FC<ConfettiProps> = ({ trigger }) => {
     useEffect(() => {
         if (!trigger) return;
 
-        const duration = 3000;
+        const duration = 8000; // Tasteful duration
         const animationEnd = Date.now() + duration;
-        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+        const defaults = { 
+            startVelocity: 60, // Prominent but not overwhelming
+            spread: 360, 
+            ticks: 100, // Good particle lifetime
+            zIndex: 9999, // Make sure it's on top
+            gravity: 0.9, // Natural gravity
+            colors: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#98D8C8', '#F7DC6F', '#BB8FCE']
+        };
 
         function randomInRange(min: number, max: number) {
             return Math.random() * (max - min) + min;
@@ -24,7 +31,7 @@ export const Confetti: React.FC<ConfettiProps> = ({ trigger }) => {
                 return clearInterval(interval);
             }
 
-            const particleCount = 50 * (timeLeft / duration);
+            const particleCount = 150 * (timeLeft / duration); // Tasteful amount
             
             // Launch confetti from both sides
             confetti({
@@ -37,14 +44,23 @@ export const Confetti: React.FC<ConfettiProps> = ({ trigger }) => {
                 particleCount,
                 origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
             });
-        }, 250);
+        }, 200); // Tasteful frequency
 
-        // Also do a big burst
+        // Initial big burst from center
         confetti({
             ...defaults,
-            particleCount: 100,
+            particleCount: 150,
             origin: { x: 0.5, y: 0.5 }
         });
+        
+        // One follow-up burst for extra celebration
+        setTimeout(() => {
+            confetti({
+                ...defaults,
+                particleCount: 100,
+                origin: { x: 0.5, y: 0.4 }
+            });
+        }, 400);
 
         return () => clearInterval(interval);
     }, [trigger]);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGame } from '../hooks/useGame';
 import { Header } from './Header';
 import { InputArea } from './InputArea';
@@ -22,10 +22,35 @@ export const Game: React.FC = () => {
         showAllCountries
     } = useGame();
 
+    // Test mode: Press 'T' to show congratulations modal
+    const [testMode, setTestMode] = useState(false);
+
+    useEffect(() => {
+        const handleKeyPress = (e: KeyboardEvent) => {
+            // Press 'T' to toggle test mode (only when not in input field)
+            if (e.key === 'T' || e.key === 't') {
+                if (document.activeElement?.tagName !== 'INPUT') {
+                    setTestMode(true);
+                    // Auto-hide after 5 seconds
+                    setTimeout(() => setTestMode(false), 5000);
+                }
+            }
+            // Press 'Escape' to close test mode
+            if (e.key === 'Escape') {
+                setTestMode(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, []);
+
+    const showCongratulations = status === 'won' || testMode;
+
     return (
         <div className="game-container">
-            <Confetti trigger={status === 'won'} />
-            {status === 'won' && <Congratulations total={totalCountries} />}
+            <Confetti trigger={showCongratulations} />
+            {showCongratulations && <Congratulations total={totalCountries} />}
             
             <Header
                 timeLeft={timeLeft}
