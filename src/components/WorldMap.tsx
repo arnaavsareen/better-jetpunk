@@ -22,7 +22,12 @@ export const WorldMapComponent: React.FC<WorldMapComponentProps> = ({
     // Style function to highlight guessed countries
     const styleFunction = (context: CountryContext<number>): React.CSSProperties => {
         const countryCode = context.countryCode.toUpperCase();
-        const isGuessed = guessedCountries.has(countryCode);
+        let isGuessed = guessedCountries.has(countryCode);
+        
+        // Highlight Greenland when Denmark is guessed
+        if (countryCode === 'GL' && guessedCountries.has('DK')) {
+            isGuessed = true;
+        }
         
         // When showing all countries (give up), highlight unguessed ones in red
         if (showAll) {
@@ -48,7 +53,13 @@ export const WorldMapComponent: React.FC<WorldMapComponentProps> = ({
     // Disable tooltips for unguessed countries
     const tooltipTextFunction = (context: CountryContext<number>): string => {
         const countryCode = context.countryCode.toUpperCase();
-        const isGuessed = showAll || guessedCountries.has(countryCode);
+        let isGuessed = showAll || guessedCountries.has(countryCode);
+        
+        // Show tooltip for Greenland when Denmark is guessed
+        if (countryCode === 'GL' && guessedCountries.has('DK')) {
+            isGuessed = true;
+        }
+        
         return isGuessed ? context.countryName : '';
     };
 

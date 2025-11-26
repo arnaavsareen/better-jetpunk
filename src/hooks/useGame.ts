@@ -56,6 +56,8 @@ export const useGame = () => {
             'czech': 'CZ', // Czech Republic
             'south korea': 'KR',
             'north korea': 'KP',
+            'saint kitts': 'KN', // Saint Kitts and Nevis
+            'car': 'CF', // Central African Republic
         };
 
         // Find if the input matches any country
