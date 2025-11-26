@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 interface InputAreaProps {
     value: string;
@@ -9,6 +9,30 @@ interface InputAreaProps {
 
 export const InputArea: React.FC<InputAreaProps> = ({ value, onChange, status, onStart }) => {
     const inputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [stickyTop, setStickyTop] = useState(0);
+
+    // Calculate header height for sticky positioning
+    useEffect(() => {
+        const updateStickyTop = () => {
+            const header = document.querySelector('.game-header') as HTMLElement;
+            if (header && containerRef.current) {
+                const headerHeight = header.offsetHeight;
+                setStickyTop(headerHeight);
+            }
+        };
+
+        updateStickyTop();
+        window.addEventListener('resize', updateStickyTop);
+        
+        // Also update after a short delay to ensure header is rendered
+        const timeout = setTimeout(updateStickyTop, 100);
+
+        return () => {
+            window.removeEventListener('resize', updateStickyTop);
+            clearTimeout(timeout);
+        };
+    }, []);
 
     useEffect(() => {
         if (status === 'playing' && inputRef.current) {
@@ -16,8 +40,61 @@ export const InputArea: React.FC<InputAreaProps> = ({ value, onChange, status, o
         }
     }, [status]);
 
+    // Prevent screen from scrolling when input is focused (especially on mobile)
+    useEffect(() => {
+        const input = inputRef.current;
+        if (!input || status !== 'playing') return;
+
+        let scrollPosition = window.scrollY || window.pageYOffset;
+        let isPreventingScroll = false;
+
+        const saveScrollPosition = () => {
+            scrollPosition = window.scrollY || window.pageYOffset;
+        };
+
+        const preventScroll = () => {
+            if (isPreventingScroll && document.activeElement === input) {
+                window.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'auto'
+                });
+            }
+        };
+
+        const handleFocus = () => {
+            saveScrollPosition();
+            isPreventingScroll = true;
+            // Prevent scroll immediately and after a short delay for mobile browsers
+            requestAnimationFrame(() => {
+                window.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'auto'
+                });
+            });
+            setTimeout(() => {
+                window.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'auto'
+                });
+                isPreventingScroll = false;
+            }, 100);
+        };
+
+        input.addEventListener('focus', handleFocus);
+        window.addEventListener('scroll', preventScroll, { passive: false });
+
+        return () => {
+            input.removeEventListener('focus', handleFocus);
+            window.removeEventListener('scroll', preventScroll);
+        };
+    }, [status]);
+
     return (
-        <div className="input-area">
+        <div 
+            ref={containerRef}
+            className="input-area"
+            style={{ top: stickyTop > 0 ? `${stickyTop}px` : '0' }}
+        >
             {status === 'idle' ? (
                 <button className="btn-start" onClick={onStart}>
                     Start Quiz

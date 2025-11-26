@@ -108,6 +108,12 @@
     justify-content: center;
     padding: 2rem 1rem 1rem;
     min-height: 120px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-color);
+    z-index: 99;
+    border-bottom: 1px solid var(--glass-border);
+    margin-top: 0;
 }
 
 .btn-start {
@@ -139,6 +145,7 @@
     color: var(--text-color);
     padding: 0.75rem;
     font-weight: 400;
+    scroll-margin-top: 0;
 }
 
 .game-input::placeholder {
@@ -485,6 +492,11 @@
     .input-area {
         padding: 1.5rem 1rem 1rem;
         min-height: 100px;
+        position: sticky;
+        top: 0;
+        background: var(--bg-color);
+        z-index: 99;
+        border-bottom: 1px solid var(--glass-border);
     }
 
     .input-wrapper {
