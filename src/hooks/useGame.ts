@@ -42,7 +42,10 @@ export const useGame = () => {
 
         if (status !== 'playing') return;
 
-        const normalizedInput = value.trim().toLowerCase();
+        let normalizedInput = value.trim().toLowerCase();
+        
+        // Replace "st." or "st " with "saint " for Saint countries
+        normalizedInput = normalizedInput.replace(/^st\.?\s+/i, 'saint ');
 
         // Common country abbreviations mapping
         const abbreviations: Record<string, string> = {
@@ -58,6 +61,11 @@ export const useGame = () => {
             'north korea': 'KP',
             'saint kitts': 'KN', // Saint Kitts and Nevis
             'car': 'CF', // Central African Republic
+            'trinidad': 'TT', // Trinidad and Tobago
+            'antigua': 'AG', // Antigua and Barbuda
+            'guinea bissau': 'GW', // Guinea-Bissau
+            'sao tome': 'ST', // São Tomé and Príncipe
+            'east timor': 'TL', // Timor-Leste
         };
 
         // Find if the input matches any country
