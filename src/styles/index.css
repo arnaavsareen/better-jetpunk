@@ -37,7 +37,7 @@ body {
     background: #ffffff;
     border: 1px solid #000;
     padding: 1rem 3rem;
-    border-radius: 50px;
+    border-radius: 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
 }

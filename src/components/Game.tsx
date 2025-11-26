@@ -4,6 +4,8 @@ import { Header } from './Header';
 import { InputArea } from './InputArea';
 import { CountryGrid } from './CountryGrid';
 import { WorldMapComponent } from './WorldMap';
+import { Confetti } from './Confetti';
+import { Congratulations } from './Congratulations';
 
 export const Game: React.FC = () => {
     const {
@@ -22,6 +24,9 @@ export const Game: React.FC = () => {
 
     return (
         <div className="game-container">
+            <Confetti trigger={status === 'won'} />
+            {status === 'won' && <Congratulations total={totalCountries} />}
+            
             <Header
                 timeLeft={timeLeft}
                 score={score}
