@@ -20,6 +20,7 @@ export const useGame = () => {
                 setTimeLeft((prev) => {
                     if (prev <= 1) {
                         setStatus('lost');
+                        setShowAllCountries(true);
                         return 0;
                     }
                     return prev - 1;
