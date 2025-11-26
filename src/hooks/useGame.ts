@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import countriesData from '../data/countries.json';
 import type { Country, GameStatus } from '../types';
-import { findBestFuzzyMatch } from '../utils/fuzzyMatch';
 
 const TOTAL_TIME = 15 * 60; // 15 minutes in seconds
 const TOTAL_COUNTRIES = countriesData.length;
@@ -44,7 +43,6 @@ export const useGame = () => {
         if (status !== 'playing') return;
 
         const normalizedInput = value.trim().toLowerCase();
-        const upperInput = value.trim().toUpperCase();
 
         // Common country abbreviations mapping
         const abbreviations: Record<string, string> = {
@@ -58,32 +56,20 @@ export const useGame = () => {
             'czech': 'CZ', // Czech Republic
             'south korea': 'KR',
             'north korea': 'KP',
-            'sk': 'SK',   // Slovakia (to avoid confusion with South Korea)
         };
 
-        // First, try exact matches (fast path)
-        let match = countriesData.find((country) => {
+        // Find if the input matches any country
+        const match = countriesData.find((country) => {
             if (guessedCountries.has(country.code)) return false;
             
             // Check accepted names
             if (country.acceptedNames.some(name => name === normalizedInput)) return true;
             
-            // Check country code (case-insensitive)
-            if (country.code.toUpperCase() === upperInput) return true;
-            
-            // Check abbreviations
+            // Check abbreviations only (no country codes)
             if (abbreviations[normalizedInput] === country.code) return true;
             
             return false;
         });
-
-        // If no exact match, try fuzzy matching
-        if (!match && normalizedInput.length >= 3) {
-            const fuzzyResult = findBestFuzzyMatch(normalizedInput, countriesData, guessedCountries);
-            if (fuzzyResult && fuzzyResult.score >= 0.75) {
-                match = fuzzyResult.country;
-            }
-        }
 
         if (match) {
             setGuessedCountries((prev) => {
