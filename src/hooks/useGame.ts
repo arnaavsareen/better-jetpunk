@@ -43,12 +43,38 @@ export const useGame = () => {
         if (status !== 'playing') return;
 
         const normalizedInput = value.trim().toLowerCase();
+        const upperInput = value.trim().toUpperCase();
+
+        // Common country abbreviations mapping
+        const abbreviations: Record<string, string> = {
+            'uae': 'AE', // United Arab Emirates
+            'dr': 'DO',  // Dominican Republic
+            'uk': 'GB',  // United Kingdom
+            'usa': 'US', // United States
+            'us': 'US',  // United States
+            'congo': 'CG', // Republic of the Congo
+            'drc': 'CD',   // Democratic Republic of the Congo
+            'czech': 'CZ', // Czech Republic
+            'south korea': 'KR',
+            'north korea': 'KP',
+            'sk': 'SK',   // Slovakia (to avoid confusion with South Korea)
+        };
 
         // Find if the input matches any country
-        const match = countriesData.find((country) =>
-            !guessedCountries.has(country.code) &&
-            country.acceptedNames.some(name => name === normalizedInput)
-        );
+        const match = countriesData.find((country) => {
+            if (guessedCountries.has(country.code)) return false;
+            
+            // Check accepted names
+            if (country.acceptedNames.some(name => name === normalizedInput)) return true;
+            
+            // Check country code (case-insensitive)
+            if (country.code.toUpperCase() === upperInput) return true;
+            
+            // Check abbreviations
+            if (abbreviations[normalizedInput] === country.code) return true;
+            
+            return false;
+        });
 
         if (match) {
             setGuessedCountries((prev) => {

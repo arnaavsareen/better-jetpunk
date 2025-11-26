@@ -6,11 +6,9 @@ interface CongratulationsProps {
 
 export const Congratulations: React.FC<CongratulationsProps> = ({ total }) => {
     const messages = [
-        "Incredible! You're a geography master!",
-        "Wow! You know every country in the world!",
-        "Amazing! You've conquered the world map!",
-        "Outstanding! You're a true world traveler!",
-        "Fantastic! You've mastered global geography!"
+        //"Winner Winner Chicken Dinner, Jello shots on you this weekend.",
+        "Wow! You know every country in the world! Get some bitches.",
+        //"You won but next time take a shot for every country you missed",
     ];
 
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
