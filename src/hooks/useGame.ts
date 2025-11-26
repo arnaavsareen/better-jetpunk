@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import countriesData from '../data/countries.json';
 import type { Country, GameStatus } from '../types';
+import { findBestFuzzyMatch } from '../utils/fuzzyMatch';
 
 const TOTAL_TIME = 15 * 60; // 15 minutes in seconds
 const TOTAL_COUNTRIES = countriesData.length;
@@ -60,8 +61,8 @@ export const useGame = () => {
             'sk': 'SK',   // Slovakia (to avoid confusion with South Korea)
         };
 
-        // Find if the input matches any country
-        const match = countriesData.find((country) => {
+        // First, try exact matches (fast path)
+        let match = countriesData.find((country) => {
             if (guessedCountries.has(country.code)) return false;
             
             // Check accepted names
@@ -75,6 +76,14 @@ export const useGame = () => {
             
             return false;
         });
+
+        // If no exact match, try fuzzy matching
+        if (!match && normalizedInput.length >= 3) {
+            const fuzzyResult = findBestFuzzyMatch(normalizedInput, countriesData, guessedCountries);
+            if (fuzzyResult && fuzzyResult.score >= 0.75) {
+                match = fuzzyResult.country;
+            }
+        }
 
         if (match) {
             setGuessedCountries((prev) => {
