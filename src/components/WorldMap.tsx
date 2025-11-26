@@ -22,8 +22,20 @@ export const WorldMapComponent: React.FC<WorldMapComponentProps> = ({
     // Style function to highlight guessed countries
     const styleFunction = (context: CountryContext<number>): React.CSSProperties => {
         const countryCode = context.countryCode.toUpperCase();
-        const isGuessed = showAll || guessedCountries.has(countryCode);
+        const isGuessed = guessedCountries.has(countryCode);
         
+        // When showing all countries (give up), highlight unguessed ones in red
+        if (showAll) {
+            return {
+                fill: isGuessed ? '#000000' : '#ff0000',
+                stroke: isGuessed ? '#000000' : '#cc0000',
+                strokeWidth: isGuessed ? 1 : 1.5,
+                cursor: 'default',
+                transition: 'fill 0.3s ease, stroke 0.3s ease'
+            };
+        }
+        
+        // Normal gameplay: only show guessed countries
         return {
             fill: isGuessed ? '#000000' : '#e5e5e5',
             stroke: isGuessed ? '#000000' : '#cccccc',

@@ -21,10 +21,16 @@ export const CountryGrid: React.FC<CountryGridProps> = ({ guessedCountries, allC
         <div className="country-grid-container">
             <div className="country-grid">
                 {allCountries.map((country) => {
-                    const isGuessed = showAll || guessedCountries.has(country.code);
+                    const isGuessed = guessedCountries.has(country.code);
+                    const shouldShow = showAll || isGuessed;
+                    const isUnguessed = showAll && !isGuessed;
+                    
                     return (
-                        <div key={country.code} className={`country-card ${isGuessed ? 'revealed' : 'hidden'}`}>
-                            {isGuessed ? (
+                        <div 
+                            key={country.code} 
+                            className={`country-card ${shouldShow ? 'revealed' : 'hidden'} ${isUnguessed ? 'unguessed' : ''}`}
+                        >
+                            {shouldShow ? (
                                 <>
                                     <img
                                         src={`https://flagcdn.com/w80/${country.code.toLowerCase()}.png`}
