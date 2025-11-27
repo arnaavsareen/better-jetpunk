@@ -34,6 +34,14 @@ export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
         setActualLocation({ lat, lng });
     }, []);
 
+    // Handle when Street View is unavailable - automatically try a new location
+    const handleLocationUnavailable = useCallback(() => {
+        const newLocation = getRandomLocation();
+        setCurrentLocation(newLocation);
+        setActualLocation(null);
+        setRoundKey(prev => prev + 1); // Force Street View to reinitialize
+    }, []);
+
     const handleGuessSubmit = useCallback(() => {
         if (!guess) return;
 
@@ -120,6 +128,7 @@ export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
                                 lat={currentLocation.lat} 
                                 lng={currentLocation.lng}
                                 onLocationFound={handleLocationFound}
+                                onLocationUnavailable={handleLocationUnavailable}
                             />
                         </div>
                         

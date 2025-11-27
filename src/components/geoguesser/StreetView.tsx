@@ -4,6 +4,7 @@ interface StreetViewProps {
     lat: number;
     lng: number;
     onLocationFound?: (lat: number, lng: number) => void;
+    onLocationUnavailable?: () => void;
 }
 
 // Get API key from environment variable
@@ -55,7 +56,7 @@ function loadGoogleMapsScript(): Promise<void> {
     });
 }
 
-export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFound }) => {
+export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFound, onLocationUnavailable }) => {
     const streetViewRef = useRef<HTMLDivElement>(null);
     const panoramaRef = useRef<google.maps.StreetViewPanorama | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -100,9 +101,9 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
             
             sv.getPanorama({
                 location: { lat, lng },
-                radius: 50000, // Search within 50km
+                radius: 100000, // Search within 100km (increased from 50km)
                 preference: google.maps.StreetViewPreference.NEAREST,
-                source: google.maps.StreetViewSource.OUTDOOR
+                source: google.maps.StreetViewSource.DEFAULT // Try all sources, not just outdoor
             }, (data, status) => {
                 // Check if this callback is for the current request
                 if (currentRequestId !== requestIdRef.current) {
@@ -139,8 +140,13 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
                     }
                     setIsLoading(false);
                 } else {
-                    setError('No Street View available for this location. Try again!');
-                    setIsLoading(false);
+                    // Notify parent that Street View is unavailable - it will try a new location
+                    if (onLocationUnavailable) {
+                        onLocationUnavailable();
+                    } else {
+                        setError('No Street View available for this location. Try again!');
+                        setIsLoading(false);
+                    }
                 }
             });
         } catch (err) {
@@ -152,7 +158,7 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
             setError('Failed to load Street View');
             setIsLoading(false);
         }
-    }, [lat, lng, onLocationFound]);
+    }, [lat, lng, onLocationFound, onLocationUnavailable]);
 
     // Initialize/update street view when coordinates change
     useEffect(() => {
