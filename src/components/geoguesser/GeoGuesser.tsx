@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import type { GeoLocation } from '../../data/geoLocations';
-import { getRandomLocation, calculateDistance, calculateScore } from '../../data/geoLocations';
+import { getRandomLocation, getRandomLocationSync, calculateDistance, calculateScore } from '../../data/geoLocations';
 import { StreetView } from './StreetView';
 import { GuessMap } from './GuessMap';
 import { GeoResults } from './GeoResults';
@@ -19,7 +19,7 @@ interface RoundResult {
 }
 
 export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
-    const [currentLocation, setCurrentLocation] = useState<GeoLocation>(() => getRandomLocation());
+    const [currentLocation, setCurrentLocation] = useState<GeoLocation>(() => getRandomLocationSync());
     const [actualLocation, setActualLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [guess, setGuess] = useState<{ lat: number; lng: number } | null>(null);
     const [phase, setPhase] = useState<GamePhase>('playing');
@@ -28,6 +28,25 @@ export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
     const [roundHistory, setRoundHistory] = useState<RoundResult[]>([]);
     const [mapExpanded, setMapExpanded] = useState(false);
     const [roundKey, setRoundKey] = useState(0); // Force Street View re-render
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+
+    // Load initial validated location
+    useEffect(() => {
+        const loadInitialLocation = async () => {
+            setIsLoadingLocation(true);
+            try {
+                const location = await getRandomLocation();
+                setCurrentLocation(location);
+            } catch (error) {
+                console.error('Error loading initial location:', error);
+                // Fallback to sync version
+                setCurrentLocation(getRandomLocationSync());
+            } finally {
+                setIsLoadingLocation(false);
+            }
+        };
+        loadInitialLocation();
+    }, []);
 
     // Track the actual location found by Street View
     const handleLocationFound = useCallback((lat: number, lng: number) => {
@@ -35,11 +54,22 @@ export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
     }, []);
 
     // Handle when Street View is unavailable - automatically try a new location
-    const handleLocationUnavailable = useCallback(() => {
-        const newLocation = getRandomLocation();
-        setCurrentLocation(newLocation);
-        setActualLocation(null);
-        setRoundKey(prev => prev + 1); // Force Street View to reinitialize
+    const handleLocationUnavailable = useCallback(async () => {
+        setIsLoadingLocation(true);
+        try {
+            const newLocation = await getRandomLocation();
+            setCurrentLocation(newLocation);
+            setActualLocation(null);
+            setRoundKey(prev => prev + 1); // Force Street View to reinitialize
+        } catch (error) {
+            console.error('Error loading new location:', error);
+            // Fallback to sync version
+            setCurrentLocation(getRandomLocationSync());
+            setActualLocation(null);
+            setRoundKey(prev => prev + 1);
+        } finally {
+            setIsLoadingLocation(false);
+        }
     }, []);
 
     const handleGuessSubmit = useCallback(() => {
@@ -73,28 +103,60 @@ export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
         setPhase('result');
     }, [guess, currentLocation, actualLocation]);
 
-    const handleNextRound = useCallback(() => {
-        const newLocation = getRandomLocation();
-        setCurrentLocation(newLocation);
-        setActualLocation(null);
-        setGuess(null);
-        setPhase('playing');
-        setRoundNumber(prev => prev + 1);
-        setMapExpanded(false);
-        setRoundKey(prev => prev + 1); // Force Street View to reinitialize
+    const handleNextRound = useCallback(async () => {
+        setIsLoadingLocation(true);
+        try {
+            const newLocation = await getRandomLocation();
+            setCurrentLocation(newLocation);
+            setActualLocation(null);
+            setGuess(null);
+            setPhase('playing');
+            setRoundNumber(prev => prev + 1);
+            setMapExpanded(false);
+            setRoundKey(prev => prev + 1); // Force Street View to reinitialize
+        } catch (error) {
+            console.error('Error loading next location:', error);
+            // Fallback to sync version
+            setCurrentLocation(getRandomLocationSync());
+            setActualLocation(null);
+            setGuess(null);
+            setPhase('playing');
+            setRoundNumber(prev => prev + 1);
+            setMapExpanded(false);
+            setRoundKey(prev => prev + 1);
+        } finally {
+            setIsLoadingLocation(false);
+        }
     }, []);
 
-    const handleReset = useCallback(() => {
-        const newLocation = getRandomLocation();
-        setCurrentLocation(newLocation);
-        setActualLocation(null);
-        setGuess(null);
-        setPhase('playing');
-        setRoundNumber(1);
-        setTotalScore(0);
-        setRoundHistory([]);
-        setMapExpanded(false);
-        setRoundKey(prev => prev + 1);
+    const handleReset = useCallback(async () => {
+        setIsLoadingLocation(true);
+        try {
+            const newLocation = await getRandomLocation();
+            setCurrentLocation(newLocation);
+            setActualLocation(null);
+            setGuess(null);
+            setPhase('playing');
+            setRoundNumber(1);
+            setTotalScore(0);
+            setRoundHistory([]);
+            setMapExpanded(false);
+            setRoundKey(prev => prev + 1);
+        } catch (error) {
+            console.error('Error loading reset location:', error);
+            // Fallback to sync version
+            setCurrentLocation(getRandomLocationSync());
+            setActualLocation(null);
+            setGuess(null);
+            setPhase('playing');
+            setRoundNumber(1);
+            setTotalScore(0);
+            setRoundHistory([]);
+            setMapExpanded(false);
+            setRoundKey(prev => prev + 1);
+        } finally {
+            setIsLoadingLocation(false);
+        }
     }, []);
 
     return (
@@ -122,15 +184,22 @@ export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
             <main className="geoguesser-main">
                 {phase === 'playing' ? (
                     <div className={`geoguesser-game ${mapExpanded ? 'map-expanded' : ''}`} style={{ height: '100%' }}>
-                        <div className="streetview-container" style={{ width: '100%', height: '100%' }}>
-                            <StreetView 
-                                key={roundKey}
-                                lat={currentLocation.lat} 
-                                lng={currentLocation.lng}
-                                onLocationFound={handleLocationFound}
-                                onLocationUnavailable={handleLocationUnavailable}
-                            />
-                        </div>
+                        {isLoadingLocation ? (
+                            <div className="geoguesser-loading">
+                                <div className="loading-spinner"></div>
+                                <p>Finding a great location...</p>
+                            </div>
+                        ) : (
+                            <div className="streetview-container" style={{ width: '100%', height: '100%' }}>
+                                <StreetView 
+                                    key={roundKey}
+                                    lat={currentLocation.lat} 
+                                    lng={currentLocation.lng}
+                                    onLocationFound={handleLocationFound}
+                                    onLocationUnavailable={handleLocationUnavailable}
+                                />
+                            </div>
+                        )}
                         
                         <div className={`guess-panel ${mapExpanded ? 'expanded' : ''}`}>
                             <button 

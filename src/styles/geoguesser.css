@@ -97,6 +97,37 @@
     position: relative;
 }
 
+/* Loading State */
+.geoguesser-loading {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    background: var(--bg-color);
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--glass-border);
+    border-top-color: var(--text-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.geoguesser-loading p {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+}
+
 /* Street View / Location View */
 .streetview-container {
     width: 100%;

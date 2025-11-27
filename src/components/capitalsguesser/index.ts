@@ -1,0 +1,2 @@
+export { CapitalsGuesser } from './CapitalsGuesser';
+
