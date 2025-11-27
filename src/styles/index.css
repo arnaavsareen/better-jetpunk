@@ -1,6 +1,7 @@
 @import './components.css';
 @import './homepage.css';
 @import './geoguesser.css';
+@import './flagguesser.css';
 
 :root {
     --bg-color: #ffffff;

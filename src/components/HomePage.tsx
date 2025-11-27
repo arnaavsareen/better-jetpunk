@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface HomePageProps {
-    onSelectGame: (game: 'countries' | 'geoguesser') => void;
+    onSelectGame: (game: 'countries' | 'geoguesser' | 'flagguesser') => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onSelectGame }) => {
@@ -33,6 +33,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectGame }) => {
                     <h2 className="game-card-title">GeoGuesser</h2>
                     <p className="game-card-description">
                         Guess locations from street view images — unlimited rounds
+                    </p>
+                    <span className="game-card-action">Play Now →</span>
+                </button>
+
+                <button 
+                    className="game-card" 
+                    onClick={() => onSelectGame('flagguesser')}
+                >
+                    <div className="game-card-icon">🏳️</div>
+                    <h2 className="game-card-title">Guess the Flag</h2>
+                    <p className="game-card-description">
+                        Name the country from its flag — 3 strikes and you're out
                     </p>
                     <span className="game-card-action">Play Now →</span>
                 </button>

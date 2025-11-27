@@ -3,13 +3,14 @@ import './styles/index.css'
 import { Game } from './components/Game'
 import { HomePage } from './components/HomePage'
 import { GeoGuesser } from './components/geoguesser'
+import { FlagGuesser } from './components/flagguesser'
 
-type GameType = 'home' | 'countries' | 'geoguesser';
+type GameType = 'home' | 'countries' | 'geoguesser' | 'flagguesser';
 
 function App() {
   const [currentGame, setCurrentGame] = useState<GameType>('home');
 
-  const handleSelectGame = (game: 'countries' | 'geoguesser') => {
+  const handleSelectGame = (game: 'countries' | 'geoguesser' | 'flagguesser') => {
     setCurrentGame(game);
   };
 
@@ -32,6 +33,9 @@ function App() {
       )}
       {currentGame === 'geoguesser' && (
         <GeoGuesser onBack={handleBackToHome} />
+      )}
+      {currentGame === 'flagguesser' && (
+        <FlagGuesser onBack={handleBackToHome} />
       )}
     </div>
   )
