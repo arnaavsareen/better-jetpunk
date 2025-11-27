@@ -18,10 +18,6 @@ export const Header: React.FC<HeaderProps> = ({ timeLeft, score, total, onGiveUp
     return (
         <header className="game-header">
             <div className="header-content">
-                <div className="logo-section">
-                    <h1>Better JetPunk</h1>
-                    <span className="subtitle">Countries of the World</span>
-                </div>
 
                 <div className="stats-section">
                     <div className="stat-box">
