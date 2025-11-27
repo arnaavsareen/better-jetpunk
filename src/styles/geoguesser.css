@@ -1,0 +1,470 @@
+/* GeoGuesser Styles */
+
+/* Container */
+.geoguesser-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-color);
+    overflow: hidden;
+}
+
+/* Header */
+.geoguesser-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--glass-border);
+    background: var(--bg-color);
+    flex-shrink: 0;
+    height: 70px;
+}
+
+.btn-back {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-color);
+    background: transparent;
+    border: 2px solid var(--text-color);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.geoguesser-title-section {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+}
+
+.geoguesser-title-section h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.geoguesser-subtitle {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.geoguesser-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.geo-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+}
+
+.geo-stat-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.geo-stat-value {
+    font-size: 1.25rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Main Game Area */
+.geoguesser-main {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.geoguesser-game {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Street View / Location View */
+.streetview-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.streetview-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.streetview-iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+}
+
+.streetview-panorama {
+    width: 100%;
+    height: 100%;
+}
+
+.streetview-overlay {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 1001;
+}
+
+.streetview-hint {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+/* Hide Google branding elements we don't want */
+.streetview-panorama .gm-style-cc,
+.streetview-panorama .gmnoprint {
+    display: none !important;
+}
+
+/* Guess Panel */
+.guess-panel {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 300px;
+    height: 280px;
+    background: var(--bg-color);
+    border: 2px solid var(--text-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.guess-panel.expanded {
+    width: 500px;
+    height: 450px;
+}
+
+.map-toggle {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #666;
+    background: #f5f5f5;
+    border: none;
+    border-bottom: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.map-toggle:hover {
+    background: #eee;
+}
+
+.guess-map-wrapper {
+    flex: 1;
+    min-height: 0;
+}
+
+.guess-map {
+    width: 100%;
+    height: 100%;
+}
+
+.btn-submit-guess {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--bg-color);
+    background: var(--text-color);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+}
+
+.btn-submit-guess:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.btn-submit-guess:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Custom Marker Styles */
+.custom-marker {
+    background: transparent;
+}
+
+.marker-pin {
+    width: 20px;
+    height: 20px;
+    background: var(--text-color);
+    border: 3px solid var(--bg-color);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.marker-pin.actual {
+    background: #22c55e;
+}
+
+.marker-pin.guess {
+    background: #ef4444;
+}
+
+/* Results */
+.geo-results {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    flex-shrink: 0;
+}
+
+.result-rating {
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.result-location {
+    font-size: 1.25rem;
+    color: #666;
+}
+
+.result-city {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.results-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f9f9f9;
+    border: 1px solid var(--glass-border);
+    flex-shrink: 0;
+}
+
+.result-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.result-stat.highlight .result-stat-value {
+    color: #22c55e;
+    font-weight: 700;
+}
+
+.result-stat-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.result-stat-label {
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.results-map-container {
+    flex: 1;
+    min-height: 250px;
+    border: 2px solid var(--text-color);
+    margin-bottom: 2rem;
+}
+
+.results-map {
+    width: 100%;
+    height: 100%;
+}
+
+.results-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.btn-next-round {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bg-color);
+    background: var(--text-color);
+    border: 2px solid var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.btn-next-round:hover {
+    opacity: 0.9;
+}
+
+.btn-reset {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    background: transparent;
+    border: 2px solid var(--glass-border);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-reset:hover {
+    border-color: var(--text-color);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .geoguesser-header {
+        padding: 0.75rem 1rem;
+        height: 60px;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .btn-back {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.75rem;
+    }
+
+    .geoguesser-title-section h1 {
+        font-size: 1.25rem;
+    }
+
+    .geoguesser-stats {
+        gap: 1.25rem;
+    }
+
+    .geo-stat-value {
+        font-size: 1rem;
+    }
+
+    .guess-panel {
+        left: 1rem;
+        right: 1rem;
+        width: auto;
+        bottom: 0.5rem;
+        height: 250px;
+    }
+
+    .guess-panel.expanded {
+        width: auto;
+        height: 50vh;
+    }
+
+    .geo-results {
+        padding: 1rem;
+    }
+
+    .result-rating {
+        font-size: 2rem;
+    }
+
+    .results-stats {
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .result-stat-value {
+        font-size: 1.25rem;
+    }
+
+    .results-actions {
+        flex-direction: column;
+    }
+
+    .btn-next-round,
+    .btn-reset {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .geoguesser-header {
+        padding: 0.5rem 0.75rem;
+        height: 55px;
+    }
+
+    .geoguesser-title-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1rem;
+    }
+
+    .geoguesser-title-section h1 {
+        font-size: 1rem;
+    }
+
+    .guess-panel {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        height: 220px;
+    }
+
+    .guess-panel.expanded {
+        height: 60vh;
+    }
+
+    .streetview-overlay {
+        top: auto;
+        bottom: 240px;
+    }
+}
