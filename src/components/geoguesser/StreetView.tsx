@@ -61,6 +61,7 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [key, setKey] = useState(0); // Force re-render key
+    const requestIdRef = useRef<number>(0);
 
     const initStreetView = useCallback(async () => {
         if (!API_KEY) {
@@ -72,10 +73,27 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
         setIsLoading(true);
         setError(null);
 
+        // Increment request ID to track the current request
+        const currentRequestId = ++requestIdRef.current;
+
         try {
             await loadGoogleMapsScript();
 
+            // Check if this request is still valid
+            if (currentRequestId !== requestIdRef.current) {
+                return;
+            }
+
             if (!streetViewRef.current) return;
+
+            // Clean up existing panorama before creating a new one
+            if (panoramaRef.current) {
+                // Clear the panorama from the DOM
+                if (streetViewRef.current) {
+                    streetViewRef.current.innerHTML = '';
+                }
+                panoramaRef.current = null;
+            }
 
             // Use StreetViewService to find the nearest panorama
             const sv = new google.maps.StreetViewService();
@@ -86,6 +104,11 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
                 preference: google.maps.StreetViewPreference.NEAREST,
                 source: google.maps.StreetViewSource.OUTDOOR
             }, (data, status) => {
+                // Check if this callback is for the current request
+                if (currentRequestId !== requestIdRef.current) {
+                    return;
+                }
+
                 if (status === google.maps.StreetViewStatus.OK && data?.location?.latLng) {
                     const actualLat = data.location.latLng.lat();
                     const actualLng = data.location.latLng.lng();
@@ -97,14 +120,10 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
 
                     const heading = Math.floor(Math.random() * 360);
 
-                    if (panoramaRef.current) {
-                        // Update existing panorama
-                        panoramaRef.current.setPosition({ lat: actualLat, lng: actualLng });
-                        panoramaRef.current.setPov({ heading, pitch: 0 });
-                    } else {
-                        // Create new panorama
+                    // Always create a new panorama instance
+                    if (streetViewRef.current) {
                         panoramaRef.current = new google.maps.StreetViewPanorama(
-                            streetViewRef.current!,
+                            streetViewRef.current,
                             {
                                 position: { lat: actualLat, lng: actualLng },
                                 pov: { heading, pitch: 0 },
@@ -125,6 +144,10 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
                 }
             });
         } catch (err) {
+            // Check if this error is for the current request
+            if (currentRequestId !== requestIdRef.current) {
+                return;
+            }
             console.error('Error:', err);
             setError('Failed to load Street View');
             setIsLoading(false);
@@ -134,14 +157,20 @@ export const StreetView: React.FC<StreetViewProps> = ({ lat, lng, onLocationFoun
     // Initialize/update street view when coordinates change
     useEffect(() => {
         initStreetView();
-    }, [lat, lng, key, initStreetView]);
 
-    // Cleanup
-    useEffect(() => {
+        // Cleanup function
         return () => {
-            panoramaRef.current = null;
+            // Increment request ID to cancel any pending requests
+            requestIdRef.current++;
+            // Clean up panorama
+            if (panoramaRef.current) {
+                panoramaRef.current = null;
+            }
+            if (streetViewRef.current) {
+                streetViewRef.current.innerHTML = '';
+            }
         };
-    }, []);
+    }, [lat, lng, key, initStreetView]);
 
     if (error) {
         return (
