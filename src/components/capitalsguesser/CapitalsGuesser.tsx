@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { countriesCapitals, type CountryCapital } from '../../data/countriesCapitals';
 import { fuzzyMatchCountry } from '../../utils/fuzzyMatch';
 
