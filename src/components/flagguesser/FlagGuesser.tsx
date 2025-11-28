@@ -27,14 +27,17 @@ export const FlagGuesser: React.FC<FlagGuesserProps> = ({ onBack }) => {
     const [correctCount, setCorrectCount] = useState(0);
     const [guess, setGuess] = useState('');
     const [phase, setPhase] = useState<GamePhase>('playing');
-    const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
+    const [feedback, setFeedback] = useState<'correct' | 'wrong' | 'skipped' | null>(null);
     const [lastCorrectAnswer, setLastCorrectAnswer] = useState<string | null>(null);
+    const [skipCount, setSkipCount] = useState(0);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const currentCountry = shuffledCountries[currentIndex];
     const totalCountries = shuffledCountries.length;
     const maxWrong = 3;
+    const maxSkips = 5;
     const livesLeft = maxWrong - wrongCount;
+    const skipsLeft = maxSkips - skipCount;
 
     // Focus input on mount and when moving to next flag
     useEffect(() => {
@@ -91,6 +94,25 @@ export const FlagGuesser: React.FC<FlagGuesserProps> = ({ onBack }) => {
         }
     }, [guess, phase, currentCountry, currentIndex, totalCountries, wrongCount]);
 
+    const handleSkip = useCallback(() => {
+        if (skipCount >= maxSkips || phase !== 'playing' || feedback !== null) return;
+
+        setFeedback('skipped');
+        setLastCorrectAnswer(currentCountry.name);
+
+        setTimeout(() => {
+            setFeedback(null);
+            setGuess('');
+            setSkipCount(prev => prev + 1);
+            
+            if (currentIndex + 1 >= totalCountries) {
+                setPhase('victory');
+            } else {
+                setCurrentIndex(prev => prev + 1);
+            }
+        }, 1500);
+    }, [skipCount, maxSkips, phase, feedback, currentCountry, currentIndex, totalCountries]);
+
     const handleRestart = useCallback(() => {
         setShuffledCountries(shuffleArray(countries));
         setCurrentIndex(0);
@@ -100,6 +122,7 @@ export const FlagGuesser: React.FC<FlagGuesserProps> = ({ onBack }) => {
         setPhase('playing');
         setFeedback(null);
         setLastCorrectAnswer(null);
+        setSkipCount(0);
     }, [countries]);
 
     const getFlagUrl = (code: string) => {
@@ -189,12 +212,15 @@ export const FlagGuesser: React.FC<FlagGuesserProps> = ({ onBack }) => {
                 </div>
                 <div className="flag-stats">
                     {renderLives()}
+                    <div className="flag-skips">
+                        Skips: {skipsLeft} / {maxSkips}
+                    </div>
                 </div>
             </header>
 
             <main className="flag-main">
                 <div className="flag-card">
-                    <div className={`flag-image-wrapper ${feedback || ''}`}>
+                    <div className={`flag-image-wrapper ${feedback === 'skipped' ? 'wrong' : feedback || ''}`}>
                         <img 
                             src={getFlagUrl(currentCountry.code)} 
                             alt="Guess this flag"
@@ -202,7 +228,7 @@ export const FlagGuesser: React.FC<FlagGuesserProps> = ({ onBack }) => {
                         />
                     </div>
 
-                    {feedback === 'wrong' && lastCorrectAnswer && (
+                    {(feedback === 'wrong' || feedback === 'skipped') && lastCorrectAnswer && (
                         <div className="flag-answer-reveal">
                             It was <strong>{lastCorrectAnswer}</strong>
                         </div>
@@ -227,6 +253,14 @@ export const FlagGuesser: React.FC<FlagGuesserProps> = ({ onBack }) => {
                             disabled={!guess.trim() || feedback !== null}
                         >
                             Guess
+                        </button>
+                        <button 
+                            type="button" 
+                            className="flag-skip"
+                            onClick={handleSkip}
+                            disabled={skipCount >= maxSkips || feedback !== null}
+                        >
+                            Skip
                         </button>
                     </form>
 

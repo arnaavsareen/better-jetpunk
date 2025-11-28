@@ -43,14 +43,17 @@ export const CapitalsGuesser: React.FC<CapitalsGuesserProps> = ({ onBack }) => {
     const [correctCount, setCorrectCount] = useState(0);
     const [guess, setGuess] = useState('');
     const [phase, setPhase] = useState<GamePhase>('playing');
-    const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
+    const [feedback, setFeedback] = useState<'correct' | 'wrong' | 'skipped' | null>(null);
     const [lastCorrectAnswer, setLastCorrectAnswer] = useState<string | null>(null);
+    const [skipCount, setSkipCount] = useState(0);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const currentCountry = shuffledCountries[currentIndex];
     const totalCountries = shuffledCountries.length;
     const maxWrong = 3;
+    const maxSkips = 5;
     const livesLeft = maxWrong - wrongCount;
+    const skipsLeft = maxSkips - skipCount;
 
     // Focus input on mount and when moving to next country
     useEffect(() => {
@@ -106,6 +109,25 @@ export const CapitalsGuesser: React.FC<CapitalsGuesserProps> = ({ onBack }) => {
         }
     }, [guess, phase, currentCountry, currentIndex, totalCountries, wrongCount]);
 
+    const handleSkip = useCallback(() => {
+        if (skipCount >= maxSkips || phase !== 'playing' || feedback !== null) return;
+
+        setFeedback('skipped');
+        setLastCorrectAnswer(currentCountry.capital);
+
+        setTimeout(() => {
+            setFeedback(null);
+            setGuess('');
+            setSkipCount(prev => prev + 1);
+            
+            if (currentIndex + 1 >= totalCountries) {
+                setPhase('victory');
+            } else {
+                setCurrentIndex(prev => prev + 1);
+            }
+        }, 1500);
+    }, [skipCount, maxSkips, phase, feedback, currentCountry, currentIndex, totalCountries]);
+
     const handleRestart = useCallback(() => {
         setShuffledCountries(shuffleArray(countriesCapitals));
         setCurrentIndex(0);
@@ -115,6 +137,7 @@ export const CapitalsGuesser: React.FC<CapitalsGuesserProps> = ({ onBack }) => {
         setPhase('playing');
         setFeedback(null);
         setLastCorrectAnswer(null);
+        setSkipCount(0);
     }, []);
 
     // Render lives as hearts
@@ -195,18 +218,21 @@ export const CapitalsGuesser: React.FC<CapitalsGuesserProps> = ({ onBack }) => {
                 </div>
                 <div className="capitals-stats">
                     {renderLives()}
+                    <div className="capitals-skips">
+                        Skips: {skipsLeft} / {maxSkips}
+                    </div>
                 </div>
             </header>
 
             <main className="capitals-main">
                 <div className="capitals-card">
-                    <div className={`capitals-country-wrapper ${feedback || ''}`}>
+                    <div className={`capitals-country-wrapper ${feedback === 'skipped' ? 'wrong' : feedback || ''}`}>
                         <div className="capitals-country-name">
                             {currentCountry.country}
                         </div>
                     </div>
 
-                    {feedback === 'wrong' && lastCorrectAnswer && (
+                    {(feedback === 'wrong' || feedback === 'skipped') && lastCorrectAnswer && (
                         <div className="capitals-answer-reveal">
                             It was <strong>{lastCorrectAnswer}</strong>
                         </div>
@@ -231,6 +257,14 @@ export const CapitalsGuesser: React.FC<CapitalsGuesserProps> = ({ onBack }) => {
                             disabled={!guess.trim() || feedback !== null}
                         >
                             Guess
+                        </button>
+                        <button 
+                            type="button" 
+                            className="capitals-skip"
+                            onClick={handleSkip}
+                            disabled={skipCount >= maxSkips || feedback !== null}
+                        >
+                            Skip
                         </button>
                     </form>
 

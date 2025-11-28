@@ -39,6 +39,13 @@
 .flag-stats {
     display: flex;
     align-items: center;
+    gap: 1rem;
+}
+
+.flag-skips {
+    font-size: 0.875rem;
+    color: #666;
+    font-weight: 500;
 }
 
 .flag-lives {
@@ -180,6 +187,30 @@
 }
 
 .flag-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.flag-skip {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 2px solid var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.flag-skip:hover:not(:disabled) {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.flag-skip:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -345,7 +376,8 @@
         padding: 0.875rem 1rem;
     }
 
-    .flag-submit {
+    .flag-submit,
+    .flag-skip {
         padding: 0.875rem 1.5rem;
     }
 
