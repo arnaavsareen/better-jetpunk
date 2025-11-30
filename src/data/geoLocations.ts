@@ -8,300 +8,197 @@ export interface GeoLocation {
     city?: string;
 }
 
-// Regions with good Street View coverage (weighted for random generation)
-const COVERAGE_REGIONS = [
-    // North America (good coverage)
-    { minLat: 25, maxLat: 49, minLng: -125, maxLng: -70, weight: 20 },
-    // Europe (excellent coverage)
-    { minLat: 36, maxLat: 70, minLng: -10, maxLng: 40, weight: 25 },
-    // Japan (excellent coverage)
-    { minLat: 31, maxLat: 45, minLng: 129, maxLng: 146, weight: 10 },
-    // South Korea (good coverage)
-    { minLat: 34, maxLat: 38, minLng: 126, maxLng: 130, weight: 5 },
-    // Australia (good coverage)
-    { minLat: -44, maxLat: -10, minLng: 113, maxLng: 154, weight: 10 },
-    // New Zealand (good coverage)
-    { minLat: -47, maxLat: -34, minLng: 166, maxLng: 178, weight: 5 },
-    // Brazil (decent coverage)
-    { minLat: -33, maxLat: 5, minLng: -74, maxLng: -35, weight: 8 },
-    // Argentina/Chile (decent coverage)
-    { minLat: -55, maxLat: -22, minLng: -76, maxLng: -53, weight: 5 },
-    // South Africa (decent coverage)
-    { minLat: -35, maxLat: -22, minLng: 16, maxLng: 33, weight: 4 },
-    // Thailand (good coverage)
-    { minLat: 5, maxLat: 21, minLng: 97, maxLng: 106, weight: 4 },
-    // Indonesia (partial coverage)
-    { minLat: -11, maxLat: 6, minLng: 95, maxLng: 141, weight: 4 },
-    // Russia (partial coverage - mainly cities)
-    { minLat: 43, maxLat: 70, minLng: 27, maxLng: 180, weight: 5 },
-    // Mexico (decent coverage)
-    { minLat: 14, maxLat: 33, minLng: -118, maxLng: -86, weight: 5 },
-    // Taiwan (excellent coverage)
-    { minLat: 21, maxLat: 26, minLng: 119, maxLng: 122, weight: 3 },
-    // Hong Kong/Singapore area
-    { minLat: 1, maxLat: 23, minLng: 103, maxLng: 115, weight: 3 },
-    // India (growing coverage)
-    { minLat: 8, maxLat: 35, minLng: 68, maxLng: 97, weight: 4 },
-    // Middle East (UAE, Israel, Turkey)
-    { minLat: 24, maxLat: 42, minLng: 26, maxLng: 56, weight: 4 },
+// Curated list of fun and interesting locations for GeoGuesser
+// Mix of urban cities, rural areas, and scenic locations from around the world
+const CURATED_LOCATIONS: Omit<GeoLocation, 'id'>[] = [
+    // NORTH AMERICA - Urban
+    { lat: 40.7589, lng: -73.9851, country: 'USA', city: 'New York City' }, // Times Square
+    { lat: 34.0522, lng: -118.2437, country: 'USA', city: 'Los Angeles' }, // Downtown LA
+    { lat: 41.8781, lng: -87.6298, country: 'USA', city: 'Chicago' }, // The Loop
+    { lat: 37.7749, lng: -122.4194, country: 'USA', city: 'San Francisco' }, // Market Street
+    { lat: 25.7617, lng: -80.1918, country: 'USA', city: 'Miami' }, // South Beach
+    { lat: 45.5017, lng: -73.5673, country: 'Canada', city: 'Montreal' }, // Old Montreal
+    { lat: 43.6532, lng: -79.3832, country: 'Canada', city: 'Toronto' }, // Downtown
+    { lat: 49.2827, lng: -123.1207, country: 'Canada', city: 'Vancouver' }, // Stanley Park
+    { lat: 19.4326, lng: -99.1332, country: 'Mexico', city: 'Mexico City' }, // Centro Histórico
+    { lat: 20.6597, lng: -103.3496, country: 'Mexico', city: 'Guadalajara' }, // Centro
+    
+    // NORTH AMERICA - Rural/Scenic
+    { lat: 36.1699, lng: -115.1398, country: 'USA', city: 'Las Vegas' }, // Strip
+    { lat: 40.0149, lng: -105.2705, country: 'USA', city: 'Boulder' }, // Mountain town
+    { lat: 37.3382, lng: -121.8863, country: 'USA', city: 'San Jose' }, // Silicon Valley
+    { lat: 33.4484, lng: -112.0740, country: 'USA', city: 'Phoenix' }, // Downtown
+    { lat: 47.6062, lng: -122.3321, country: 'USA', city: 'Seattle' }, // Pike Place
+    
+    // EUROPE - Urban
+    { lat: 51.5074, lng: -0.1278, country: 'UK', city: 'London' }, // Westminster
+    { lat: 48.8566, lng: 2.3522, country: 'France', city: 'Paris' }, // Champs-Élysées
+    { lat: 52.5200, lng: 13.4050, country: 'Germany', city: 'Berlin' }, // Mitte
+    { lat: 41.9028, lng: 12.4964, country: 'Italy', city: 'Rome' }, // Centro Storico
+    { lat: 40.4168, lng: -3.7038, country: 'Spain', city: 'Madrid' }, // Puerta del Sol
+    { lat: 41.3851, lng: 2.1734, country: 'Spain', city: 'Barcelona' }, // Las Ramblas
+    { lat: 52.3676, lng: 4.9041, country: 'Netherlands', city: 'Amsterdam' }, // Centrum
+    { lat: 59.3293, lng: 18.0686, country: 'Sweden', city: 'Stockholm' }, // Gamla Stan
+    { lat: 55.6761, lng: 12.5683, country: 'Denmark', city: 'Copenhagen' }, // Nyhavn
+    { lat: 50.0755, lng: 14.4378, country: 'Czech Republic', city: 'Prague' }, // Old Town
+    { lat: 48.2082, lng: 16.3738, country: 'Austria', city: 'Vienna' }, // Innere Stadt
+    { lat: 45.4642, lng: 9.1900, country: 'Italy', city: 'Milan' }, // Duomo
+    { lat: 50.8503, lng: 4.3517, country: 'Belgium', city: 'Brussels' }, // Grand Place
+    { lat: 53.3498, lng: -6.2603, country: 'Ireland', city: 'Dublin' }, // Temple Bar
+    { lat: 59.9343, lng: 30.3351, country: 'Russia', city: 'Saint Petersburg' }, // Nevsky Prospect
+    
+    // EUROPE - Rural/Scenic
+    { lat: 47.3769, lng: 8.5417, country: 'Switzerland', city: 'Zurich' }, // Old Town
+    { lat: 46.5197, lng: 6.6323, country: 'Switzerland', city: 'Lausanne' }, // Lake Geneva
+    { lat: 60.1699, lng: 24.9384, country: 'Finland', city: 'Helsinki' }, // Senate Square
+    { lat: 64.1466, lng: -21.9426, country: 'Iceland', city: 'Reykjavik' }, // Downtown
+    { lat: 38.7223, lng: -9.1393, country: 'Portugal', city: 'Lisbon' }, // Alfama
+    { lat: 41.0082, lng: 28.9784, country: 'Turkey', city: 'Istanbul' }, // Sultanahmet
+    
+    // ASIA - Urban
+    { lat: 35.6762, lng: 139.6503, country: 'Japan', city: 'Tokyo' }, // Shibuya
+    { lat: 34.6937, lng: 135.5023, country: 'Japan', city: 'Osaka' }, // Dotonbori
+    { lat: 35.0116, lng: 135.7681, country: 'Japan', city: 'Kyoto' }, // Gion
+    { lat: 37.5665, lng: 126.9780, country: 'South Korea', city: 'Seoul' }, // Myeongdong
+    { lat: 22.3193, lng: 114.1694, country: 'Hong Kong', city: 'Hong Kong' }, // Central
+    { lat: 1.3521, lng: 103.8198, country: 'Singapore', city: 'Singapore' }, // Marina Bay
+    { lat: 25.0330, lng: 121.5654, country: 'Taiwan', city: 'Taipei' }, // Ximending
+    { lat: 13.7563, lng: 100.5018, country: 'Thailand', city: 'Bangkok' }, // Sukhumvit
+    { lat: 3.1390, lng: 101.6869, country: 'Malaysia', city: 'Kuala Lumpur' }, // KLCC
+    { lat: -6.2088, lng: 106.8456, country: 'Indonesia', city: 'Jakarta' }, // Menteng
+    { lat: 19.0760, lng: 72.8777, country: 'India', city: 'Mumbai' }, // Colaba
+    { lat: 28.6139, lng: 77.2090, country: 'India', city: 'New Delhi' }, // Connaught Place
+    { lat: 12.9716, lng: 77.5946, country: 'India', city: 'Bangalore' }, // MG Road
+    { lat: 31.2304, lng: 121.4737, country: 'China', city: 'Shanghai' }, // The Bund
+    { lat: 39.9042, lng: 116.4074, country: 'China', city: 'Beijing' }, // Forbidden City area
+    
+    // ASIA - Rural/Scenic
+    { lat: 35.6586, lng: 139.7454, country: 'Japan', city: 'Tokyo' }, // Harajuku
+    { lat: 24.7136, lng: 46.6753, country: 'Saudi Arabia', city: 'Riyadh' }, // Al Olaya
+    { lat: 25.2048, lng: 55.2708, country: 'UAE', city: 'Dubai' }, // Downtown
+    { lat: 24.4539, lng: 54.3773, country: 'UAE', city: 'Abu Dhabi' }, // Corniche
+    
+    // OCEANIA - Urban
+    { lat: -33.8688, lng: 151.2093, country: 'Australia', city: 'Sydney' }, // Circular Quay
+    { lat: -37.8136, lng: 144.9631, country: 'Australia', city: 'Melbourne' }, // CBD
+    { lat: -27.4698, lng: 153.0251, country: 'Australia', city: 'Brisbane' }, // South Bank
+    { lat: -31.9505, lng: 115.8605, country: 'Australia', city: 'Perth' }, // CBD
+    { lat: -34.9285, lng: 138.6007, country: 'Australia', city: 'Adelaide' }, // Rundle Mall
+    { lat: -36.8485, lng: 174.7633, country: 'New Zealand', city: 'Auckland' }, // CBD
+    { lat: -41.2865, lng: 174.7762, country: 'New Zealand', city: 'Wellington' }, // Lambton Quay
+    
+    // OCEANIA - Rural/Scenic
+    { lat: -25.2744, lng: 133.7751, country: 'Australia', city: 'Uluru area' }, // Outback
+    { lat: -43.5321, lng: 172.6362, country: 'New Zealand', city: 'Christchurch' }, // Cathedral Square
+    
+    // SOUTH AMERICA - Urban
+    { lat: -23.5505, lng: -46.6333, country: 'Brazil', city: 'São Paulo' }, // Avenida Paulista
+    { lat: -22.9068, lng: -43.1729, country: 'Brazil', city: 'Rio de Janeiro' }, // Copacabana
+    { lat: -34.6037, lng: -58.3816, country: 'Argentina', city: 'Buenos Aires' }, // Microcentro
+    { lat: -33.4489, lng: -70.6693, country: 'Chile', city: 'Santiago' }, // Centro
+    { lat: -12.0464, lng: -77.0428, country: 'Peru', city: 'Lima' }, // Miraflores
+    { lat: 4.7110, lng: -74.0721, country: 'Colombia', city: 'Bogotá' }, // La Candelaria
+    { lat: -0.1807, lng: -78.4678, country: 'Ecuador', city: 'Quito' }, // Old Town
+    
+    // SOUTH AMERICA - Rural/Scenic
+    { lat: -15.7975, lng: -47.8919, country: 'Brazil', city: 'Brasília' }, // Plano Piloto
+    { lat: -25.2637, lng: -57.5759, country: 'Paraguay', city: 'Asunción' }, // Centro
+    
+    // AFRICA - Urban
+    { lat: -33.9249, lng: 18.4241, country: 'South Africa', city: 'Cape Town' }, // V&A Waterfront
+    { lat: -26.2041, lng: 28.0473, country: 'South Africa', city: 'Johannesburg' }, // Sandton
+    { lat: 30.0444, lng: 31.2357, country: 'Egypt', city: 'Cairo' }, // Downtown
+    { lat: 31.7683, lng: 35.2137, country: 'Israel', city: 'Jerusalem' }, // Old City
+    { lat: 32.0853, lng: 34.7818, country: 'Israel', city: 'Tel Aviv' }, // Rothschild Boulevard
+    
+    // AFRICA - Rural/Scenic
+    { lat: -1.2921, lng: 36.8219, country: 'Kenya', city: 'Nairobi' }, // CBD
+    { lat: 33.5731, lng: -7.5898, country: 'Morocco', city: 'Casablanca' }, // Corniche
 ];
 
-// Calculate total weight
-const totalWeight = COVERAGE_REGIONS.reduce((sum, r) => sum + r.weight, 0);
-
-// Generate a random location from regions with Street View coverage
-function generateRandomLocation(): GeoLocation {
-    // Pick a random region based on weight
-    let random = Math.random() * totalWeight;
-    let selectedRegion = COVERAGE_REGIONS[0];
-    
-    for (const region of COVERAGE_REGIONS) {
-        random -= region.weight;
-        if (random <= 0) {
-            selectedRegion = region;
-            break;
-        }
-    }
-
-    // Generate random coordinates within the selected region
-    const lat = selectedRegion.minLat + Math.random() * (selectedRegion.maxLat - selectedRegion.minLat);
-    const lng = selectedRegion.minLng + Math.random() * (selectedRegion.maxLng - selectedRegion.minLng);
-
+// Get a random location from the curated list
+function getRandomCuratedLocation(): GeoLocation {
+    const location = CURATED_LOCATIONS[Math.floor(Math.random() * CURATED_LOCATIONS.length)];
     return {
         id: Date.now() + Math.random(),
-        lat: Math.round(lat * 10000) / 10000,
-        lng: Math.round(lng * 10000) / 10000,
+        lat: location.lat,
+        lng: location.lng,
+        country: location.country,
+        city: location.city,
     };
 }
 
 /**
- * Find a nearby location with clues (roads, cities, landmarks)
- * Uses reverse geocoding to find actual places instead of random fields
- */
-async function findLocationWithClues(lat: number, lng: number): Promise<GeoLocation | null> {
-    try {
-        // Use reverse geocoding to find nearby roads/cities
-        // This ensures we're near actual infrastructure with clues
-        const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`,
-            {
-                headers: {
-                    'User-Agent': 'BetterJetPunk/1.0'
-                },
-                signal: AbortSignal.timeout(2000) // 2 second timeout
-            }
-        );
-
-        if (!response.ok) {
-            return null;
-        }
-
-        const data = await response.json();
-        
-        // Check if we found a road or populated area
-        if (data.address) {
-            const hasRoad = data.address.road || data.address.pedestrian || data.address.path;
-            const hasCity = data.address.city || data.address.town || data.address.village;
-            const hasSuburb = data.address.suburb || data.address.neighbourhood;
-            
-            // If we're on a road or in a populated area, use this location
-            if (hasRoad || hasCity || hasSuburb) {
-                // Use the exact coordinates from the response if available
-                const resultLat = parseFloat(data.lat) || lat;
-                const resultLng = parseFloat(data.lon) || lng;
-                
-                return {
-                    id: Date.now() + Math.random(),
-                    lat: Math.round(resultLat * 10000) / 10000,
-                    lng: Math.round(resultLng * 10000) / 10000,
-                };
-            }
-        }
-        
-        // If no good location found, try searching nearby (within 1km)
-        // Look for roads in the area
-        const nearbyResponse = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=road&lat=${lat}&lon=${lng}&radius=1000&limit=1`,
-            {
-                headers: {
-                    'User-Agent': 'BetterJetPunk/1.0'
-                },
-                signal: AbortSignal.timeout(2000)
-            }
-        );
-        
-        if (nearbyResponse.ok) {
-            const nearbyData = await nearbyResponse.json();
-            if (nearbyData && nearbyData.length > 0) {
-                const result = nearbyData[0];
-                return {
-                    id: Date.now() + Math.random(),
-                    lat: Math.round(parseFloat(result.lat) * 10000) / 10000,
-                    lng: Math.round(parseFloat(result.lon) * 10000) / 10000,
-                };
-            }
-        }
-        
-        return null;
-    } catch (error) {
-        // On error, return null to fall back to original coordinates
-        return null;
-    }
-}
-
-// Simple ocean detection using known ocean coordinates
-// This avoids API calls and rate limiting
-function isLikelyOcean(lat: number, lng: number): boolean {
-    // Major ocean regions (approximate boundaries)
-    // Pacific Ocean
-    if (lat > -60 && lat < 60 && lng > 100 && lng < -70) {
-        // Check if it's actually in the Pacific (not near land)
-        if (lat > 5 && lat < 50 && lng > 120 && lng < -120) {
-            // Far from known land masses in Pacific
-            if (!(lat > 20 && lat < 50 && lng > 120 && lng < 150) && // Japan
-                !(lat > -10 && lat < 10 && lng > 100 && lng < 150) && // Indonesia/Philippines
-                !(lat > -50 && lat < -10 && lng > 110 && lng < 180)) { // Australia/New Zealand
-                return true;
-            }
-        }
-    }
-    
-    // Atlantic Ocean (east of Americas, west of Europe/Africa)
-    if (lat > -60 && lat < 70 && lng > -80 && lng < 20) {
-        // Far from known land
-        if (!(lat > 25 && lat < 50 && lng > -80 && lng < -50) && // North America east coast
-            !(lat > 35 && lat < 70 && lng > -10 && lng < 40) && // Europe
-            !(lat > -35 && lat < 35 && lng > -20 && lng < 50)) { // Africa
-            // Check if it's in the middle of Atlantic
-            if (lng > -60 && lng < 0 && lat > 10 && lat < 50) {
-                return true;
-            }
-        }
-    }
-    
-    // Indian Ocean
-    if (lat > -60 && lat < 30 && lng > 20 && lng < 120) {
-        // Far from known land
-        if (!(lat > -35 && lat < 5 && lng > 20 && lng < 50) && // Africa east coast
-            !(lat > 5 && lat < 35 && lng > 60 && lng < 100) && // India
-            !(lat > -12 && lat < 6 && lng > 95 && lng < 141)) { // Indonesia
-            // Middle of Indian Ocean
-            if (lng > 50 && lng < 100 && lat > -40 && lat < 10) {
-                return true;
-            }
-        }
-    }
-    
-    // Arctic Ocean (very high latitude, away from known land)
-    if (lat > 70 && lat < 90) {
-        // Most of Arctic is ocean, but we want to avoid it anyway for Street View
-        return true;
-    }
-    
-    // Southern Ocean (very low latitude, away from known land)
-    if (lat < -60) {
-        return true;
-    }
-    
-    return false;
-}
-
-/**
- * Simple validation - just check if it's obviously in an ocean
- * We skip API calls to avoid rate limiting - Street View API will handle availability
- */
-async function isLocationOnLand(lat: number, lng: number): Promise<boolean> {
-    // Quick check - if it's obviously in an ocean, reject it
-    return !isLikelyOcean(lat, lng);
-}
-
-/**
- * Get a random location that is validated to be on land AND has clues
- * Tries to find locations near roads/cities instead of random fields
- * Uses reverse geocoding to find actual places with infrastructure
+ * Get a random location from the curated list of interesting places
+ * All locations are pre-validated to be interesting and have good Street View coverage
  */
 export async function getRandomLocation(): Promise<GeoLocation> {
-    const maxRetries = 3; // Reduced retries since we're doing more work per attempt
-    let attempts = 0;
-
-    while (attempts < maxRetries) {
-        const baseLocation = generateRandomLocation();
-        
-        // Fast validation - check if it's not obviously in ocean
-        const isValid = await isLocationOnLand(baseLocation.lat, baseLocation.lng);
-        
-        if (!isValid) {
-            attempts++;
-            continue;
-        }
-        
-        // Try to find a nearby location with clues (roads, cities, etc.)
-        // This ensures we're not in the middle of a field
-        try {
-            const locationWithClues = await findLocationWithClues(baseLocation.lat, baseLocation.lng);
-            
-            if (locationWithClues) {
-                // Found a location with clues, use it
-                return locationWithClues;
-            }
-            
-            // If we couldn't find a location with clues, try the base location
-            // Street View API will find the nearest panorama anyway
-            // But add a small random offset to avoid exact field centers
-            const offsetLat = baseLocation.lat + (Math.random() - 0.5) * 0.01; // ~1km offset
-            const offsetLng = baseLocation.lng + (Math.random() - 0.5) * 0.01;
-            
-            return {
-                id: Date.now() + Math.random(),
-                lat: Math.round(offsetLat * 10000) / 10000,
-                lng: Math.round(offsetLng * 10000) / 10000,
-            };
-        } catch (error) {
-            // If finding clues fails, use base location with offset
-            const offsetLat = baseLocation.lat + (Math.random() - 0.5) * 0.01;
-            const offsetLng = baseLocation.lng + (Math.random() - 0.5) * 0.01;
-            
-            return {
-                id: Date.now() + Math.random(),
-                lat: Math.round(offsetLat * 10000) / 10000,
-                lng: Math.round(offsetLng * 10000) / 10000,
-            };
-        }
-    }
-
-    // If all retries failed, return a generated location anyway
-    // Street View will find the nearest panorama
-    return generateRandomLocation();
+    // Simply return a random location from our curated list
+    // All locations are already interesting and validated
+    return getRandomCuratedLocation();
 }
 
 /**
  * Synchronous version for backward compatibility
- * Returns a location without validation (used as fallback)
+ * Returns a location from the curated list
  */
 export function getRandomLocationSync(): GeoLocation {
-    return generateRandomLocation();
+    return getRandomCuratedLocation();
 }
 
-// Get multiple unique random locations (async version with validation)
+// Get multiple unique random locations from curated list
 export async function getRandomLocations(count: number): Promise<GeoLocation[]> {
     const locations: GeoLocation[] = [];
-    for (let i = 0; i < count; i++) {
-        const location = await getRandomLocation();
-        locations.push(location);
-        // Small delay to avoid rate limiting
-        if (i < count - 1) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
+    const usedIndices = new Set<number>();
+    
+    // Ensure we don't request more locations than we have
+    const maxCount = Math.min(count, CURATED_LOCATIONS.length);
+    
+    while (locations.length < maxCount) {
+        let index: number;
+        do {
+            index = Math.floor(Math.random() * CURATED_LOCATIONS.length);
+        } while (usedIndices.has(index));
+        
+        usedIndices.add(index);
+        const location = CURATED_LOCATIONS[index];
+        locations.push({
+            id: Date.now() + Math.random() + locations.length,
+            lat: location.lat,
+            lng: location.lng,
+            country: location.country,
+            city: location.city,
+        });
     }
+    
     return locations;
 }
 
 // Synchronous version for backward compatibility
 export function getRandomLocationsSync(count: number): GeoLocation[] {
     const locations: GeoLocation[] = [];
-    for (let i = 0; i < count; i++) {
-        locations.push(generateRandomLocation());
+    const usedIndices = new Set<number>();
+    
+    // Ensure we don't request more locations than we have
+    const maxCount = Math.min(count, CURATED_LOCATIONS.length);
+    
+    while (locations.length < maxCount) {
+        let index: number;
+        do {
+            index = Math.floor(Math.random() * CURATED_LOCATIONS.length);
+        } while (usedIndices.has(index));
+        
+        usedIndices.add(index);
+        const location = CURATED_LOCATIONS[index];
+        locations.push({
+            id: Date.now() + Math.random() + locations.length,
+            lat: location.lat,
+            lng: location.lng,
+            country: location.country,
+            city: location.city,
+        });
     }
+    
     return locations;
 }
 
