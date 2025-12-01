@@ -5,6 +5,8 @@ import { HomePage } from './components/HomePage'
 import { GeoGuesser } from './components/geoguesser'
 import { FlagGuesser } from './components/flagguesser'
 import { CapitalsGuesser } from './components/capitalsguesser'
+import { ThemePicker } from './components/ThemePicker'
+import { ThemeProvider } from './contexts/ThemeContext'
 
 type GameType = 'home' | 'countries' | 'geoguesser' | 'flagguesser' | 'capitalsguesser';
 
@@ -20,7 +22,11 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <ThemeProvider>
+      <div className="app-container">
+        <div className="theme-picker-wrapper">
+          <ThemePicker />
+        </div>
       {currentGame === 'home' && (
         <HomePage onSelectGame={handleSelectGame} />
       )}
@@ -41,7 +47,8 @@ function App() {
       {currentGame === 'capitalsguesser' && (
         <CapitalsGuesser onBack={handleBackToHome} />
       )}
-    </div>
+      </div>
+    </ThemeProvider>
   )
 }
 
