@@ -129,6 +129,32 @@ export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
         }
     }, []);
 
+    const handleSkip = useCallback(async () => {
+        setIsLoadingLocation(true);
+        try {
+            const newLocation = await getRandomLocation();
+            setCurrentLocation(newLocation);
+            setActualLocation(null);
+            setGuess(null);
+            setPhase('playing');
+            setRoundNumber(prev => prev + 1);
+            setMapExpanded(false);
+            setRoundKey(prev => prev + 1);
+        } catch (error) {
+            console.error('Error loading skip location:', error);
+            // Fallback to sync version
+            setCurrentLocation(getRandomLocationSync());
+            setActualLocation(null);
+            setGuess(null);
+            setPhase('playing');
+            setRoundNumber(prev => prev + 1);
+            setMapExpanded(false);
+            setRoundKey(prev => prev + 1);
+        } finally {
+            setIsLoadingLocation(false);
+        }
+    }, []);
+
     const handleReset = useCallback(async () => {
         setIsLoadingLocation(true);
         try {
@@ -215,13 +241,22 @@ export const GeoGuesser: React.FC<GeoGuesserProps> = ({ onBack }) => {
                                 expanded={mapExpanded}
                             />
                             
-                            <button 
-                                className="btn-submit-guess"
-                                onClick={handleGuessSubmit}
-                                disabled={!guess}
-                            >
-                                {guess ? 'Submit Guess' : 'Click on the map to guess'}
-                            </button>
+                            <div className="guess-panel-actions">
+                                <button 
+                                    className="btn-skip"
+                                    onClick={handleSkip}
+                                    disabled={isLoadingLocation}
+                                >
+                                    Skip
+                                </button>
+                                <button 
+                                    className="btn-submit-guess"
+                                    onClick={handleGuessSubmit}
+                                    disabled={!guess}
+                                >
+                                    {guess ? 'Submit Guess' : 'Click on the map to guess'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ) : (
