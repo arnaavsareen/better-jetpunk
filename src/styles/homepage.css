@@ -31,6 +31,65 @@
     letter-spacing: 0.02em;
 }
 
+.home-search-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 3rem;
+}
+
+.home-search-input {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    padding-right: 2.5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.home-search-input:focus {
+    border-color: var(--text-color);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.home-search-input::placeholder {
+    color: #999;
+}
+
+.home-search-clear {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-search-clear:hover {
+    color: var(--text-color);
+}
+
+.home-no-results {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #666;
+    font-size: 1.125rem;
+}
+
 .game-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -133,7 +192,7 @@
     }
 
     .home-header {
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
     }
 
     .home-title {
@@ -142,6 +201,17 @@
 
     .home-subtitle {
         font-size: 1rem;
+    }
+
+    .home-search-container {
+        margin-bottom: 2rem;
+        max-width: 100%;
+    }
+
+    .home-search-input {
+        font-size: 0.9375rem;
+        padding: 0.75rem 1rem;
+        padding-right: 2.25rem;
     }
 
     .game-cards {
