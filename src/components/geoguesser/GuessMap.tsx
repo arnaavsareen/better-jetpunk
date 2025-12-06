@@ -71,6 +71,15 @@ export const GuessMap: React.FC<GuessMapProps> = ({ guess, onGuess, expanded }) 
         }
     }, [expanded]);
 
+    // Ensure map is properly sized on mount
+    useEffect(() => {
+        if (mapInstanceRef.current && mapRef.current) {
+            setTimeout(() => {
+                mapInstanceRef.current?.invalidateSize();
+            }, 100);
+        }
+    }, []);
+
     // Update marker if guess changes externally
     useEffect(() => {
         if (!mapInstanceRef.current) return;

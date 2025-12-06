@@ -33,9 +33,9 @@
 
 .game-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
-    max-width: 800px;
+    max-width: 1200px;
     width: 100%;
 }
 
@@ -116,6 +116,14 @@
     color: var(--bg-color);
 }
 
+/* Tablet Responsiveness */
+@media (max-width: 1024px) {
+    .game-cards {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 800px;
+    }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .home-container {
@@ -139,6 +147,7 @@
     .game-cards {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+        max-width: 100%;
     }
 
     .game-card {

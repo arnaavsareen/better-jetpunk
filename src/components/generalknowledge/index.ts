@@ -1,0 +1,2 @@
+export { GeneralKnowledge } from './GeneralKnowledge';
+

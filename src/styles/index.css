@@ -3,6 +3,7 @@
 @import './geoguesser.css';
 @import './flagguesser.css';
 @import './capitalsguesser.css';
+@import './generalknowledge.css';
 
 :root {
     --bg-color: #ffffff;
@@ -59,14 +60,14 @@ html {
 
 .theme-picker-wrapper {
     position: fixed;
-    top: 1rem;
+    bottom: 1rem;
     right: 1rem;
     z-index: 1000;
 }
 
 @media (max-width: 768px) {
     .theme-picker-wrapper {
-        top: 0.5rem;
+        bottom: 0.5rem;
         right: 0.5rem;
     }
 }

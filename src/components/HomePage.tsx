@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface HomePageProps {
-    onSelectGame: (game: 'countries' | 'geoguesser' | 'flagguesser' | 'capitalsguesser') => void;
+    onSelectGame: (game: 'countries' | 'geoguesser' | 'flagguesser' | 'capitalsguesser' | 'ethnoguesser' | 'generalknowledge') => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onSelectGame }) => {
@@ -57,6 +57,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectGame }) => {
                     <h2 className="game-card-title">Countries & Capitals</h2>
                     <p className="game-card-description">
                         Name the capital of each country — 3 strikes and you're out
+                    </p>
+                    <span className="game-card-action">Play Now →</span>
+                </button>
+
+                <button 
+                    className="game-card" 
+                    onClick={() => onSelectGame('ethnoguesser')}
+                >
+                    <div className="game-card-icon">👥</div>
+                    <h2 className="game-card-title">EthnoGuesser</h2>
+                    <p className="game-card-description">
+                        Guess ethnic groups from facial composites — daily challenge with 10 rounds
+                    </p>
+                    <span className="game-card-action">Play Now →</span>
+                </button>
+
+                <button 
+                    className="game-card" 
+                    onClick={() => onSelectGame('generalknowledge')}
+                >
+                    <div className="game-card-icon">🧠</div>
+                    <h2 className="game-card-title">General Knowledge</h2>
+                    <p className="game-card-description">
+                        AI-generated quizzes on topics you choose — customize difficulty and test your knowledge
                     </p>
                     <span className="game-card-action">Play Now →</span>
                 </button>

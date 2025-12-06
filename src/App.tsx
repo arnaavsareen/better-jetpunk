@@ -5,15 +5,17 @@ import { HomePage } from './components/HomePage'
 import { GeoGuesser } from './components/geoguesser'
 import { FlagGuesser } from './components/flagguesser'
 import { CapitalsGuesser } from './components/capitalsguesser'
+import { EthnoGuesser } from './components/ethnoguesser'
+import { GeneralKnowledge } from './components/generalknowledge'
 import { ThemePicker } from './components/ThemePicker'
 import { ThemeProvider } from './contexts/ThemeContext'
 
-type GameType = 'home' | 'countries' | 'geoguesser' | 'flagguesser' | 'capitalsguesser';
+type GameType = 'home' | 'countries' | 'geoguesser' | 'flagguesser' | 'capitalsguesser' | 'ethnoguesser' | 'generalknowledge';
 
 function App() {
   const [currentGame, setCurrentGame] = useState<GameType>('home');
 
-  const handleSelectGame = (game: 'countries' | 'geoguesser' | 'flagguesser' | 'capitalsguesser') => {
+  const handleSelectGame = (game: 'countries' | 'geoguesser' | 'flagguesser' | 'capitalsguesser' | 'ethnoguesser' | 'generalknowledge') => {
     setCurrentGame(game);
   };
 
@@ -46,6 +48,12 @@ function App() {
       )}
       {currentGame === 'capitalsguesser' && (
         <CapitalsGuesser onBack={handleBackToHome} />
+      )}
+      {currentGame === 'ethnoguesser' && (
+        <EthnoGuesser onBack={handleBackToHome} />
+      )}
+      {currentGame === 'generalknowledge' && (
+        <GeneralKnowledge onBack={handleBackToHome} />
       )}
       </div>
     </ThemeProvider>

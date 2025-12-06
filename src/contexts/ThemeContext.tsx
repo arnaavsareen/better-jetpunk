@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
-export type Theme = 'light' | 'dark' | 'blue' | 'green' | 'purple' | 'orange';
+export type Theme = 'light' | 'dark';
 
 const THEME_STORAGE_KEY = 'better-jetpunk-theme';
 
@@ -27,50 +27,6 @@ const themes: Record<Theme, Record<string, string>> = {
         '--glass-border': 'rgba(255, 255, 255, 0.2)',
         '--success-color': '#4caf50',
         '--error-color': '#ff5252',
-    },
-    blue: {
-        '--bg-color': '#e3f2fd',
-        '--text-color': '#0d47a1',
-        '--primary-color': '#1976d2',
-        '--secondary-color': '#ffffff',
-        '--accent-color': '#0d47a1',
-        '--glass-bg': 'rgba(13, 71, 161, 0.05)',
-        '--glass-border': 'rgba(13, 71, 161, 0.2)',
-        '--success-color': '#1976d2',
-        '--error-color': '#d32f2f',
-    },
-    green: {
-        '--bg-color': '#e8f5e9',
-        '--text-color': '#1b5e20',
-        '--primary-color': '#388e3c',
-        '--secondary-color': '#ffffff',
-        '--accent-color': '#1b5e20',
-        '--glass-bg': 'rgba(27, 94, 32, 0.05)',
-        '--glass-border': 'rgba(27, 94, 32, 0.2)',
-        '--success-color': '#388e3c',
-        '--error-color': '#d32f2f',
-    },
-    purple: {
-        '--bg-color': '#f3e5f5',
-        '--text-color': '#4a148c',
-        '--primary-color': '#7b1fa2',
-        '--secondary-color': '#ffffff',
-        '--accent-color': '#4a148c',
-        '--glass-bg': 'rgba(74, 20, 140, 0.05)',
-        '--glass-border': 'rgba(74, 20, 140, 0.2)',
-        '--success-color': '#7b1fa2',
-        '--error-color': '#d32f2f',
-    },
-    orange: {
-        '--bg-color': '#fff3e0',
-        '--text-color': '#e65100',
-        '--primary-color': '#f57c00',
-        '--secondary-color': '#ffffff',
-        '--accent-color': '#e65100',
-        '--glass-bg': 'rgba(230, 81, 0, 0.05)',
-        '--glass-border': 'rgba(230, 81, 0, 0.2)',
-        '--success-color': '#f57c00',
-        '--error-color': '#d32f2f',
     },
 };
 

@@ -1,0 +1,710 @@
+/* EthnoGuesser Styles */
+
+/* Container */
+.ethnoguesser-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-color);
+    overflow: hidden;
+}
+
+/* Header */
+.ethnoguesser-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--glass-border);
+    background: var(--bg-color);
+    flex-shrink: 0;
+    height: 70px;
+}
+
+.ethnoguesser-title-section {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+}
+
+.ethnoguesser-title-section h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.ethnoguesser-subtitle {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.ethnoguesser-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+.ethno-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+}
+
+.ethno-stat-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ethno-stat-value {
+    font-size: 1.25rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.ethno-stat-value.time-warning {
+    color: #ef4444;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Main Game Area */
+.ethnoguesser-main {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.ethnoguesser-game {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ethnoguesser-game.map-expanded {
+    flex-direction: column-reverse;
+}
+
+/* Ethnic Group Display */
+.ethnic-group-display {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    overflow-y: auto;
+    background: var(--bg-color);
+    position: relative;
+    z-index: 1;
+}
+
+.ethnic-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+
+.estimated-score {
+    text-align: center;
+    padding: 0.75rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.estimated-score strong {
+    font-size: 1.1rem;
+    color: #22c55e;
+}
+
+
+.ethnic-group-name {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.02em;
+    color: var(--text-color);
+}
+
+.ethnic-group-name-hidden {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.02em;
+    color: var(--text-color);
+}
+
+.btn-toggle-description {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-color);
+    background: transparent;
+    border: 2px solid var(--glass-border);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.btn-toggle-description:hover {
+    border-color: var(--text-color);
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.ethnic-group-info {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.ethnic-group-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0 0 1rem 0;
+}
+
+.ethnic-group-meta {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.meta-value {
+    color: #666;
+}
+
+/* Facial Composite Images */
+.ethnic-group-images {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.facial-composite-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 250px;
+    max-width: 400px;
+}
+
+.composite-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.facial-composite {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    border: 2px solid var(--glass-border);
+    border-radius: 8px;
+    background: var(--glass-bg);
+    object-fit: contain;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.composite-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 350px;
+    min-height: 400px;
+    background: var(--glass-bg);
+    border: 2px dashed var(--glass-border);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.fallback-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.composite-fallback p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0.25rem 0;
+}
+
+.fallback-hint {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 0.5rem;
+}
+
+.composite-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 350px;
+    min-height: 400px;
+    background: var(--glass-bg);
+    border: 2px dashed var(--glass-border);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.loading-spinner-small {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--glass-border);
+    border-top-color: var(--text-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+.composite-loading p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.image-source-hint {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.ethnic-group-hint {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+    font-style: italic;
+}
+
+/* Guess Panel (reusing geoguesser styles) */
+.guess-panel {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 300px;
+    height: 280px;
+    background: var(--bg-color);
+    border: 2px solid var(--text-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    pointer-events: auto;
+}
+
+.guess-panel.expanded {
+    width: 500px;
+    height: 450px;
+}
+
+.map-toggle {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #666;
+    background: #f5f5f5;
+    border: none;
+    border-bottom: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.map-toggle:hover {
+    background: #eee;
+}
+
+.guess-map-wrapper {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.guess-map {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.guess-panel-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    padding: 0.75rem;
+}
+
+.btn-submit-guess {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--bg-color);
+    background: var(--text-color);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex: 1;
+    width: 100%;
+}
+
+.btn-submit-guess:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.btn-submit-guess:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Results */
+.ethno-results {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    flex-shrink: 0;
+}
+
+.result-rating {
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.result-location {
+    font-size: 1.25rem;
+    color: #666;
+}
+
+.result-ethnic-group {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.results-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    flex-shrink: 0;
+}
+
+.result-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.result-stat.highlight .result-stat-value {
+    color: #22c55e;
+    font-weight: 700;
+}
+
+.result-stat-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.result-stat-label {
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.results-map-container {
+    flex: 1;
+    min-height: 250px;
+    border: 2px solid var(--text-color);
+    margin-bottom: 2rem;
+}
+
+.results-map {
+    width: 100%;
+    height: 100%;
+}
+
+.ethnic-group-details {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.ethnic-group-details h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: var(--text-color);
+}
+
+.ethnic-group-details p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0 0 1rem 0;
+}
+
+.ethnic-details-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.detail-meta-item {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.detail-value {
+    color: #666;
+}
+
+.results-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.game-complete-message {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.game-complete-message h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color);
+}
+
+.game-complete-message p {
+    font-size: 1.1rem;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.btn-next-round {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bg-color);
+    background: var(--text-color);
+    border: 2px solid var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.btn-next-round:hover {
+    opacity: 0.9;
+}
+
+.btn-reset {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    background: transparent;
+    border: 2px solid var(--glass-border);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-reset:hover {
+    border-color: var(--text-color);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .ethnoguesser-header {
+        padding: 0.75rem 1rem;
+        height: 60px;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .ethnoguesser-title-section h1 {
+        font-size: 1.25rem;
+    }
+
+    .ethnoguesser-stats {
+        gap: 1.25rem;
+    }
+
+    .ethno-stat-value {
+        font-size: 1rem;
+    }
+
+    .ethnic-group-display {
+        padding: 1rem;
+    }
+
+    .ethnic-group-name,
+    .ethnic-group-name-hidden {
+        font-size: 1.5rem;
+    }
+
+    .ethnic-group-images {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .facial-composite-container {
+        max-width: 100%;
+    }
+
+    .facial-composite {
+        max-width: 100%;
+    }
+
+    .guess-panel {
+        left: 1rem;
+        right: 1rem;
+        width: auto;
+        bottom: 0.5rem;
+        height: 250px;
+    }
+
+    .guess-panel.expanded {
+        width: auto;
+        height: 50vh;
+    }
+
+    .ethno-results {
+        padding: 1rem;
+    }
+
+    .result-rating {
+        font-size: 2rem;
+    }
+
+    .results-stats {
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .result-stat-value {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ethnoguesser-header {
+        padding: 0.5rem 0.75rem;
+        height: 55px;
+    }
+
+    .ethnoguesser-title-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1rem;
+    }
+
+    .ethnoguesser-title-section h1 {
+        font-size: 1rem;
+    }
+
+    .ethnic-group-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .guess-panel {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        height: 220px;
+    }
+
+    .guess-panel.expanded {
+        height: 60vh;
+    }
+}
+

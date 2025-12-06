@@ -1,0 +1,382 @@
+[
+  {
+    "id": 1,
+    "name": "Nordid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Scandinavia",
+    "lat": 60.472,
+    "lng": 8.4689,
+    "region": "Europe",
+    "imageKey": "nordid"
+  },
+  {
+    "id": 2,
+    "name": "Mediterranid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Mediterranean Basin",
+    "lat": 38.7223,
+    "lng": 13.3613,
+    "region": "Europe",
+    "imageKey": "mediterranid"
+  },
+  {
+    "id": 3,
+    "name": "Alpinid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Central Europe",
+    "lat": 47.3769,
+    "lng": 8.5417,
+    "region": "Europe",
+    "imageKey": "alpinid"
+  },
+  {
+    "id": 4,
+    "name": "East Nordid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Eastern Europe",
+    "lat": 55.7558,
+    "lng": 37.6173,
+    "region": "Europe",
+    "imageKey": "eastnordid"
+  },
+  {
+    "id": 5,
+    "name": "Keltic Nordid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Western Europe",
+    "lat": 53.3498,
+    "lng": -6.2603,
+    "region": "Europe",
+    "imageKey": "kelticnordid"
+  },
+  {
+    "id": 6,
+    "name": "Sinid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "East Asia",
+    "lat": 35.6762,
+    "lng": 139.6503,
+    "region": "Asia",
+    "imageKey": "sinid"
+  },
+  {
+    "id": 7,
+    "name": "Sundadont",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Southeast Asia",
+    "lat": 13.7563,
+    "lng": 100.5018,
+    "region": "Asia",
+    "imageKey": "sundadont"
+  },
+  {
+    "id": 8,
+    "name": "Indid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "South Asia",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "region": "Asia",
+    "imageKey": "indid"
+  },
+  {
+    "id": 9,
+    "name": "Turanid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Central Asia",
+    "lat": 43.222,
+    "lng": 76.8512,
+    "region": "Asia",
+    "imageKey": "turanid"
+  },
+  {
+    "id": 10,
+    "name": "Armenid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "West Asia",
+    "lat": 33.8938,
+    "lng": 35.5018,
+    "region": "Asia",
+    "imageKey": "armenid"
+  },
+  {
+    "id": 11,
+    "name": "Congoid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "West Africa",
+    "lat": 6.5244,
+    "lng": 3.3792,
+    "region": "Africa",
+    "imageKey": "congoid"
+  },
+  {
+    "id": 12,
+    "name": "Aethiopid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "East Africa",
+    "lat": 9.145,
+    "lng": 38.7616,
+    "region": "Africa",
+    "imageKey": "aethiopid"
+  },
+  {
+    "id": 13,
+    "name": "Bantuid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Central/Southern Africa",
+    "lat": -4.0383,
+    "lng": 21.7587,
+    "region": "Africa",
+    "imageKey": "bantuid"
+  },
+  {
+    "id": 14,
+    "name": "Berberid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "North Africa",
+    "lat": 31.6295,
+    "lng": -7.9811,
+    "region": "Africa",
+    "imageKey": "berberid"
+  },
+  {
+    "id": 15,
+    "name": "Amerindian",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Americas",
+    "lat": 19.4326,
+    "lng": -99.1332,
+    "region": "Americas",
+    "imageKey": "amerindian"
+  },
+  {
+    "id": 16,
+    "name": "Maya",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Mesoamerica",
+    "lat": 20.6597,
+    "lng": -103.3496,
+    "region": "Americas",
+    "imageKey": "maya"
+  },
+  {
+    "id": 17,
+    "name": "Andean",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Andes",
+    "lat": -12.0464,
+    "lng": -77.0428,
+    "region": "Americas",
+    "imageKey": "andean"
+  },
+  {
+    "id": 18,
+    "name": "Polynesid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Polynesia",
+    "lat": -21.1786,
+    "lng": -175.1982,
+    "region": "Oceania",
+    "imageKey": "polynesid"
+  },
+  {
+    "id": 19,
+    "name": "Melanesid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Melanesia",
+    "lat": -9.4438,
+    "lng": 147.1803,
+    "region": "Oceania",
+    "imageKey": "melanesid"
+  },
+  {
+    "id": 20,
+    "name": "Australid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Australia",
+    "lat": -25.2744,
+    "lng": 133.7751,
+    "region": "Oceania",
+    "imageKey": "australid"
+  },
+  {
+    "id": 21,
+    "name": "Tungid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Siberia",
+    "lat": 64.8436,
+    "lng": 177.4833,
+    "region": "Asia",
+    "imageKey": "tungid"
+  },
+  {
+    "id": 22,
+    "name": "Eskimid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Arctic",
+    "lat": 64.8378,
+    "lng": -147.7164,
+    "region": "Americas",
+    "imageKey": "eskimid"
+  },
+  {
+    "id": 23,
+    "name": "Dravidian",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "South India",
+    "lat": 13.0827,
+    "lng": 80.2707,
+    "region": "Asia",
+    "imageKey": "dravidian"
+  },
+  {
+    "id": 24,
+    "name": "Khoid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Southern Africa",
+    "lat": -22.9576,
+    "lng": 18.4904,
+    "region": "Africa",
+    "imageKey": "khoid"
+  },
+  {
+    "id": 25,
+    "name": "Sudanid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Sudan",
+    "lat": 15.5007,
+    "lng": 32.5599,
+    "region": "Africa",
+    "imageKey": "sudanid"
+  },
+  {
+    "id": 26,
+    "name": "Atlantid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Iberian Peninsula",
+    "lat": 40.4168,
+    "lng": -3.7038,
+    "region": "Europe",
+    "imageKey": "atlantid"
+  },
+  {
+    "id": 27,
+    "name": "Brunn",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "British Isles",
+    "lat": 55.3781,
+    "lng": -3.436,
+    "region": "Europe",
+    "imageKey": "brunn"
+  },
+  {
+    "id": 28,
+    "name": "Borreby",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Northern Europe",
+    "lat": 55.6761,
+    "lng": 12.5683,
+    "region": "Europe",
+    "imageKey": "borreby"
+  },
+  {
+    "id": 29,
+    "name": "Faelid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Central Europe",
+    "lat": 52.52,
+    "lng": 13.405,
+    "region": "Europe",
+    "imageKey": "faelid"
+  },
+  {
+    "id": 30,
+    "name": "Dalofaelid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Scandinavia",
+    "lat": 59.3293,
+    "lng": 18.0686,
+    "region": "Europe",
+    "imageKey": "dalofaelid"
+  },
+  {
+    "id": 31,
+    "name": "West Baltid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Eastern Europe",
+    "lat": 52.2297,
+    "lng": 21.0122,
+    "region": "Europe",
+    "imageKey": "westbaltid"
+  },
+  {
+    "id": 32,
+    "name": "East Baltid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Baltic",
+    "lat": 54.6872,
+    "lng": 25.2797,
+    "region": "Europe",
+    "imageKey": "eastbaltid"
+  },
+  {
+    "id": 33,
+    "name": "Lappid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Lapland",
+    "lat": 68.2589,
+    "lng": 27.5385,
+    "region": "Europe",
+    "imageKey": "lappid"
+  },
+  {
+    "id": 34,
+    "name": "Uralid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Ural Region",
+    "lat": 59.9343,
+    "lng": 30.3351,
+    "region": "Europe",
+    "imageKey": "uralid"
+  },
+  {
+    "id": 35,
+    "name": "Sibirid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Siberia",
+    "lat": 55.7558,
+    "lng": 37.6173,
+    "region": "Asia",
+    "imageKey": "sibirid"
+  },
+  {
+    "id": 36,
+    "name": "Paleomongolid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Central Asia",
+    "lat": 47.8864,
+    "lng": 106.9057,
+    "region": "Asia",
+    "imageKey": "paleomongolid"
+  },
+  {
+    "id": 37,
+    "name": "Neomongolid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Mongolia",
+    "lat": 47.8864,
+    "lng": 106.9057,
+    "region": "Asia",
+    "imageKey": "neomongolid"
+  },
+  {
+    "id": 38,
+    "name": "Sakhalid",
+    "description": "Explore different anthropological types of the pre-colonial world. Browse 38 basic types and over 200 local varieties with descriptions, photos, and distribution maps.",
+    "primaryRegion": "Sakhalin",
+    "lat": 46.9541,
+    "lng": 142.736,
+    "region": "Asia",
+    "imageKey": "sakhalid"
+  }
+]
