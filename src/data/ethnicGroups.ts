@@ -145,30 +145,18 @@ export function calculateScore(distance: number): number {
     return Math.max(0, 500 - Math.floor(distance / 100));
 }
 
-// Get daily set of all ethnic groups in shuffled order (based on date)
-// Ensures all groups are shown before any repetition
+// Get a random set of 10 ethnic groups (no seed, truly random each time)
 export function getDailyEthnicGroups(): EthnicGroup[] {
-    const today = new Date();
-    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
-    
-    // Use day of year as seed for consistent daily order
-    const seed = dayOfYear;
-    
-    // Create a shuffled copy of all groups using seeded random
+    // Create a shuffled copy of all groups
     const shuffled = [...ethnicGroups];
-    let seedValue = seed;
     
-    function seededRandom() {
-        seedValue = (seedValue * 9301 + 49297) % 233280;
-        return seedValue / 233280;
-    }
-    
-    // Fisher-Yates shuffle with seeded random
+    // Fisher-Yates shuffle
     for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(seededRandom() * (i + 1));
+        const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     
-    return shuffled;
+    // Return first 10 groups from shuffled array
+    return shuffled.slice(0, 10);
 }
 
