@@ -24,11 +24,13 @@ export async function generateQuiz(
     const topicsText = topics.join(', ');
     const prompt = `Create a 10-question multiple choice quiz on the following topics: ${topicsText}. Difficulty level: ${difficulty}.
 
-Requirements:
-- Each question should have exactly 4 answer options (A, B, C, D)
-- Only one correct answer per question
+CRITICAL REQUIREMENTS:
+- Each question must have exactly 4 answer options (A, B, C, D)
+- Only ONE correct answer per question - ensure the correctAnswer index (0-3) matches the actual correct option
+- For math questions: Double-check all calculations. Verify the correct answer is actually correct.
 - Questions should be appropriate for ${difficulty} difficulty level
-- Include a brief explanation for each correct answer
+- Include a brief explanation for each correct answer that shows why it's correct
+- The correctAnswer must be the index (0, 1, 2, or 3) of the CORRECT option in the options array
 - Format the response as a JSON object with this exact structure:
 {
   "questions": [
@@ -40,6 +42,8 @@ Requirements:
     }
   ]
 }
+
+IMPORTANT: For math questions, verify your calculations. The correctAnswer index MUST point to the mathematically correct option.
 
 Return ONLY valid JSON, no additional text or markdown formatting.`;
 
@@ -55,7 +59,7 @@ Return ONLY valid JSON, no additional text or markdown formatting.`;
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are a quiz generator. Always return valid JSON only, no markdown, no code blocks.'
+                        content: 'You are an accurate quiz generator. Always return valid JSON only, no markdown, no code blocks. For math questions, double-check all calculations before marking the correct answer. Ensure the correctAnswer index (0-3) always points to the actually correct option.'
                     },
                     {
                         role: 'user',
@@ -94,6 +98,10 @@ Return ONLY valid JSON, no additional text or markdown formatting.`;
         for (const q of quizData.questions) {
             if (!q.question || !q.options || q.options.length !== 4 || typeof q.correctAnswer !== 'number') {
                 throw new Error('Invalid question format.');
+            }
+            // Validate correctAnswer is a valid index (0-3)
+            if (q.correctAnswer < 0 || q.correctAnswer > 3 || !Number.isInteger(q.correctAnswer)) {
+                throw new Error(`Invalid correctAnswer index: ${q.correctAnswer}. Must be 0, 1, 2, or 3.`);
             }
         }
 
