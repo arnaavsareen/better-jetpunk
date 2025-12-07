@@ -35,9 +35,38 @@ export const EthnoResults: React.FC<EthnoResultsProps> = ({
     const mapInstanceRef = useRef<L.Map | null>(null);
     const actualMarkerRef = useRef<L.Marker | null>(null);
     const guessMarkerRef = useRef<L.Marker | null>(null);
+    const polylineRef = useRef<L.Polyline | null>(null);
+    const tileLayerRef = useRef<L.TileLayer | null>(null);
 
     useEffect(() => {
-        if (!mapRef.current || mapInstanceRef.current) return;
+        if (!mapRef.current) return;
+
+        // Clean up existing map if it exists
+        if (mapInstanceRef.current) {
+            if (actualMarkerRef.current) {
+                mapInstanceRef.current.removeLayer(actualMarkerRef.current);
+                actualMarkerRef.current = null;
+            }
+            if (guessMarkerRef.current) {
+                mapInstanceRef.current.removeLayer(guessMarkerRef.current);
+                guessMarkerRef.current = null;
+            }
+            if (polylineRef.current) {
+                mapInstanceRef.current.removeLayer(polylineRef.current);
+                polylineRef.current = null;
+            }
+            if (tileLayerRef.current) {
+                mapInstanceRef.current.removeLayer(tileLayerRef.current);
+                tileLayerRef.current = null;
+            }
+            mapInstanceRef.current.remove();
+            mapInstanceRef.current = null;
+        }
+
+        // Clear the map container
+        if (mapRef.current) {
+            mapRef.current.innerHTML = '';
+        }
 
         // Initialize map
         const map = L.map(mapRef.current, {
@@ -52,11 +81,12 @@ export const EthnoResults: React.FC<EthnoResultsProps> = ({
         });
 
         // Add tile layer
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
             maxZoom: 20
         }).addTo(map);
+        tileLayerRef.current = tileLayer;
 
         // Custom icons
         const actualIcon = L.divIcon({
@@ -88,10 +118,11 @@ export const EthnoResults: React.FC<EthnoResultsProps> = ({
         guessMarkerRef.current.bindPopup(`<strong>Your Guess</strong>`);
 
         // Draw line between guess and actual
-        L.polyline(
+        const polyline = L.polyline(
             [[ethnicGroup.lat, ethnicGroup.lng], [guess.lat, guess.lng]],
             { color: '#ef4444', weight: 2, dashArray: '5, 5' }
         ).addTo(map);
+        polylineRef.current = polyline;
 
         // Fit map to show both markers
         const group = new L.FeatureGroup([actualMarkerRef.current, guessMarkerRef.current]);
@@ -100,12 +131,28 @@ export const EthnoResults: React.FC<EthnoResultsProps> = ({
         mapInstanceRef.current = map;
 
         return () => {
-            map.remove();
-            mapInstanceRef.current = null;
+            if (mapInstanceRef.current) {
+                if (actualMarkerRef.current) {
+                    mapInstanceRef.current.removeLayer(actualMarkerRef.current);
+                }
+                if (guessMarkerRef.current) {
+                    mapInstanceRef.current.removeLayer(guessMarkerRef.current);
+                }
+                if (polylineRef.current) {
+                    mapInstanceRef.current.removeLayer(polylineRef.current);
+                }
+                if (tileLayerRef.current) {
+                    mapInstanceRef.current.removeLayer(tileLayerRef.current);
+                }
+                mapInstanceRef.current.remove();
+                mapInstanceRef.current = null;
+            }
             actualMarkerRef.current = null;
             guessMarkerRef.current = null;
+            polylineRef.current = null;
+            tileLayerRef.current = null;
         };
-    }, [ethnicGroup, guess]);
+    }, [ethnicGroup.lat, ethnicGroup.lng, ethnicGroup.name, guess.lat, guess.lng]);
 
     const getRating = () => {
         if (distance < 100) return { text: 'Perfect!', emoji: '🎯' };
